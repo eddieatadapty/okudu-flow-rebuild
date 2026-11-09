@@ -1,0 +1,1719 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!-- flow-rebuild template (Growth Audit, v3: + walkthrough video, phone view/QR, localization, paywall today vs proposed). Replace every double-brace placeholder, everything between
+     the SCREENS markers, and the CONTENT json. Rules that brand-check.py enforces are marked RULE.
+     Reference builds: eddieatadapty.github.io/datacamp-flow-rebuild-v2 · bterzic123.github.io/planner5d-flow-rebuild-v2 -->
+<title>Okudu Growth Audit</title>
+<meta name="description" content="Five ideas and two of Okudu's live ads, built into a clickable version of Okudu's own story flow. Prepared by Adapty.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- the APP's font (brand.json fonts, or the closest Google family) + a mono if the app shows code -->
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* BRAND:START — the only place the APP's colours are written as literals. RULE: every value here is
+   copied from brand.json / a sampled pixel of the app's own screens; never "improved". Used only inside the phone. */
+:root{
+  --b-primary:#cd3b3e;               /* CTA red, sampled off the welcome screen (site #ce3b40) */
+  --b-primary-ink:#ffffff;
+  --b-bg:#ffffff;                    /* light theme screens */
+  --b-surface:#f5f2ec;               /* chips, fields, cards (site neutral; sampled #f4f1eb) */
+  --b-ink:#1a2836;                   /* headings + body (site) */
+  --b-ink2:#2d4059;                  /* secondary text (site) */
+  --b-line:#e2e2dc;                  /* hairlines, sampled off home */
+  --b-accent2:#6a55dd;               /* selected chip purple (site; sampled #6855db) */
+  --b-reader:#fefbce;                /* reader background, App Store screenshot 3 */
+  --b-grad:linear-gradient(180deg,#6a54dc 0%,#d53f44 100%); /* their App Store listing gradient */
+  --b-radius:14px;
+  --b-pill:999px;
+  --b-font:'Open Sans',-apple-system,system-ui,sans-serif;
+  --b-serif:'Literata',Georgia,serif;
+  --b-mono:ui-monospace,monospace;
+}
+/* BRAND:END */
+.scr .h1,.scr .o-h3,.scr .o-top h1,.scr .o-rt,.scr .o-rp,.scr .o-next,.scr .o-keep h2{font-family:var(--b-serif)}
+/* A second app family (e.g. a mono for code) is applied HERE, never in SCREENS css (brand-check allows only
+   var(--b-font) there). Prefix with .scr so it beats the screens' font shorthands, e.g.:
+   .scr .code,.scr .instr code{font-family:var(--b-mono)} */
+
+/* ================= the audit page — Adapty's, not the app's. Light, Apple-style. ================= */
+/* "Your ads × your flow": the two Meta ads and what each changes in the flow */
+.au-adsec{border-top:1px solid var(--st-hair)}
+.au-ads{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:clamp(40px,6vw,64px)}
+.au-adc{display:grid;grid-template-columns:128px 1fr;gap:22px;background:var(--st-card);border-radius:28px;padding:22px}
+.au-adc img{width:128px;height:228px;object-fit:cover;border-radius:16px;display:block}
+.au-adk{margin:0;font-size:13.5px;font-weight:600;color:var(--st-ink2)}
+.au-adc blockquote{margin:8px 0 0;font-size:19px;line-height:1.3;font-weight:600;letter-spacing:-.015em}
+.au-adh{margin:8px 0 0;font-size:13.5px;color:var(--st-ink3)}
+.au-adc dl{margin:14px 0 14px;padding-top:12px;border-top:1px solid var(--st-hair);font-size:14.5px}
+.au-adc dt{font-size:12px;font-weight:600;color:var(--st-ink3);margin-top:8px}
+.au-adc dd{margin:2px 0 0;color:var(--st-ink)}
+.au-adc .au-lnk{font-size:15px}
+.au-adn{margin:22px 0 0;font-size:14.5px;line-height:1.55;color:var(--st-ink2);max-width:86ch}
+@media (max-width:860px){.au-ads{grid-template-columns:1fr}}
+@media (max-width:480px){.au-adc{grid-template-columns:92px 1fr;gap:16px;padding:18px}.au-adc img{width:92px;height:164px}}
+
+:root{
+  color-scheme:light;
+  --st-ground:#f5f5f7; --st-card:#ffffff; --st-ink:#1d1d1f; --st-ink2:#6e6e73; --st-ink3:#86868b;
+  --st-hair:rgba(0,0,0,.09); --st-link:#0066cc;
+  --st-accent:#1a2836;      /* dark brand colour of the APP: buttons, the outcome band */
+  --st-hi:#9985ff;          /* bright brand colour of the APP: outcome numbers on the band, idea dots */
+  --st-mark:rgba(153,133,255,.45); /* --st-hi at ~.5 alpha: the highlighter under impact numbers */
+  --st-font:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+html,body{margin:0}
+body{background:var(--st-ground);color:var(--st-ink);font-family:var(--st-font);-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.47}
+.au-wrap{max-width:1080px;margin:0 auto;padding-inline:22px}
+a{color:var(--st-link)}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--st-link);outline-offset:3px;border-radius:6px}
+mark{background:linear-gradient(transparent 62%,var(--st-mark) 62%,var(--st-mark) 92%,transparent 92%);color:inherit;padding:0 .04em}
+
+/* nav */
+.au-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(245,245,247,.8);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--st-hair)}
+.au-nav-in{max-width:1080px;margin:0 auto;padding-inline:22px;height:52px;display:flex;align-items:center;gap:26px}
+.au-brand{display:flex;align-items:center;gap:10px;margin-right:auto;min-width:0}
+.au-brand img{width:26px;height:26px;border-radius:7px;flex:none}
+.au-brand span{font-size:15px;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
+.au-brand small{font-size:15px;font-weight:400;color:var(--st-ink2)}
+.au-nav a{font-size:13px;color:var(--st-ink);text-decoration:none;opacity:.82}
+.au-nav a:hover{opacity:1}
+@media (max-width:560px){.au-nav a.au-opt{display:none}.au-brand small{display:none}}
+
+/* hero */
+.au-top-hero{text-align:center;padding-top:clamp(56px,9vw,96px);overflow:hidden;position:relative}
+.au-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:600;color:var(--st-ink);margin:0 0 14px}
+.au-eyebrow i{width:8px;height:8px;border-radius:50%;background:var(--st-hi);box-shadow:0 0 0 3px var(--st-mark)}
+.au-display{font-size:clamp(60px,12vw,120px);line-height:.98;font-weight:700;letter-spacing:-.05em;margin:0}
+.au-lede{font-size:clamp(23px,3.4vw,34px);line-height:1.16;font-weight:600;letter-spacing:-.022em;max-width:760px;margin:22px auto 0;text-wrap:balance}
+.au-lede span{color:var(--st-ink2)}
+.au-byline{font-size:14px;color:var(--st-ink3);margin:18px 0 0}
+.au-ctas{display:flex;gap:26px;justify-content:center;align-items:center;margin-top:30px;flex-wrap:wrap}
+.au-btn{display:inline-block;background:var(--st-accent);color:#fff;border-radius:980px;padding:12px 23px;font-size:17px;font-weight:500;text-decoration:none;border:0;cursor:pointer}
+.au-btn:hover{filter:brightness(1.25)}
+.au-lnk{background:none;border:0;padding:0;color:var(--st-link);font-size:17px;text-decoration:none;cursor:pointer}
+.au-lnk::after{content:"\00a0›"}
+.au-lnk:hover{text-decoration:underline}
+.au-phones{display:flex;justify-content:center;align-items:flex-start;margin-top:clamp(40px,6vw,64px);height:clamp(300px,52vw,560px)}
+.au-hp{flex:none;border:0;padding:0;background:none;cursor:pointer;width:27%;max-width:290px;margin:0 -2.5%;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.au-hp img{display:block;width:100%;height:auto;filter:drop-shadow(0 28px 50px rgba(0,0,0,.2))}
+.au-hp.au-c{width:31%;max-width:330px;z-index:2}
+.au-hp.au-l{transform:translateY(12%) rotate(-5deg)}
+.au-hp.au-r{transform:translateY(12%) rotate(5deg)}
+.au-hp.au-l:hover{transform:translateY(9%) rotate(-5deg)}.au-hp.au-r:hover{transform:translateY(9%) rotate(5deg)}.au-hp.au-c:hover{transform:translateY(-3%)}
+
+/* sections */
+.au-sec{padding-block:clamp(72px,10vw,120px)}
+.au-sec.au-white{background:var(--st-card)}
+.au-kicker{font-size:15px;font-weight:600;color:var(--st-ink2);margin:0 0 12px}
+.au-h2{font-size:clamp(34px,5.2vw,56px);line-height:1.06;font-weight:700;letter-spacing:-.035em;margin:0;text-wrap:balance}
+.au-h2 span{color:var(--st-ink3)}
+.au-split{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(28px,6vw,80px);align-items:end}
+.au-split p{margin:0;font-size:clamp(17px,1.7vw,21px);line-height:1.45;color:var(--st-ink2);letter-spacing:-.01em}
+.au-split p b{color:var(--st-ink);font-weight:600}
+.au-split p + p{margin-top:16px}
+.au-stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:clamp(48px,7vw,80px);border-top:1px solid var(--st-hair)}
+.au-stat{padding:28px 20px 0 0}
+.au-stat b{display:block;font-size:clamp(40px,5.5vw,64px);font-weight:700;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.au-stat span{display:block;font-size:15px;color:var(--st-ink2);margin-top:10px;max-width:22ch}
+.au-notes{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,40px);margin-top:clamp(48px,7vw,72px)}
+.au-note h3{font-size:19px;font-weight:600;letter-spacing:-.015em;margin:0 0 8px}
+.au-note p{margin:0;font-size:15.5px;line-height:1.5;color:var(--st-ink2)}
+.au-note .au-ic{width:36px;height:36px;border-radius:10px;background:var(--st-ground);display:grid;place-items:center;margin-bottom:16px}
+.au-note .au-ic svg{width:19px;height:19px;stroke:var(--st-accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ideas */
+.au-ideas-h{margin-bottom:clamp(32px,5vw,48px)}
+.au-list{background:var(--st-card);border-radius:28px;padding-inline:clamp(20px,4vw,44px)}
+.au-idea{display:grid;grid-template-columns:56px 1fr 220px;gap:20px;align-items:start;padding-block:clamp(26px,3.5vw,36px);border-top:1px solid var(--st-hair)}
+.au-idea:first-child{border-top:0}
+.au-idea .au-num{font-size:15px;font-weight:600;color:var(--st-ink3);font-variant-numeric:tabular-nums;padding-top:6px}
+.au-idea h3{font-size:clamp(21px,2.4vw,26px);line-height:1.2;font-weight:600;letter-spacing:-.022em;margin:0 0 8px}
+.au-idea p{margin:0 0 12px;font-size:17px;line-height:1.5;color:var(--st-ink2);max-width:58ch}
+.au-idea p code{font:600 15px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--st-ink);background:var(--st-ground);padding:2px 7px;border-radius:6px}
+.au-idea .au-lnk{font-size:15px}
+.au-imp{text-align:right}
+.au-imp .au-v{font-size:clamp(30px,3.6vw,40px);font-weight:700;letter-spacing:-.035em;line-height:1;font-variant-numeric:tabular-nums;color:var(--st-accent)}
+.au-imp .au-l{font-size:13.5px;color:var(--st-ink2);margin-top:8px}
+.au-band{margin-top:20px;background:var(--st-accent);color:#fff;border-radius:28px;padding:clamp(32px,5vw,56px);display:grid;grid-template-columns:1fr auto;gap:clamp(28px,5vw,64px);align-items:center}
+.au-band .au-k{font-size:15px;font-weight:600;color:rgba(255,255,255,.62);margin:0 0 10px}
+.au-band h3{font-size:clamp(24px,3vw,32px);line-height:1.18;font-weight:600;letter-spacing:-.022em;margin:0;text-wrap:balance}
+.au-band .au-fn{font-size:13px;line-height:1.5;color:rgba(255,255,255,.55);margin:16px 0 0;max-width:52ch}
+.au-nums{display:flex;gap:clamp(28px,4vw,48px)}
+.au-nums small{display:block;font-size:13px;color:rgba(255,255,255,.62)}
+.au-nums b{display:block;font-size:clamp(48px,6.5vw,76px);font-weight:700;letter-spacing:-.045em;line-height:1;color:var(--st-hi);font-variant-numeric:tabular-nums;margin:4px 0 8px}
+.au-nums span{font-size:14px;color:rgba(255,255,255,.8)}
+.au-band .au-btn{background:var(--st-hi);color:var(--st-accent);font-weight:600;margin-top:26px}
+
+/* prototype */
+.au-proto-h{text-align:center;max-width:720px;margin:0 auto}
+.au-proto-h p{font-size:clamp(17px,1.7vw,21px);color:var(--st-ink2);margin:14px 0 0}
+.au-seg{display:flex;gap:4px;justify-content:center;margin:clamp(28px,4vw,40px) auto 0;padding:4px;background:var(--st-ground);border-radius:980px;width:max-content;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.au-seg::-webkit-scrollbar{display:none}
+.au-chip{flex:none;display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--st-ink2);font-size:13.5px;font-weight:500;padding:8px 14px;border-radius:980px;cursor:pointer;white-space:nowrap}
+.au-chip:hover{color:var(--st-ink)}
+.au-chip.on{background:var(--st-card);color:var(--st-ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.au-chip i{font-style:normal;font-size:11px;font-weight:700;width:18px;height:18px;border-radius:50%;display:grid;place-items:center;background:var(--st-hi);color:var(--st-accent)}
+.au-stage{display:grid;grid-template-columns:auto minmax(0,420px);gap:clamp(32px,6vw,72px);justify-content:center;align-items:center;margin-top:clamp(28px,4vw,44px)}
+.phone{width:390px;height:844px;border-radius:56px;padding:10px;background:#0b0d10;box-shadow:0 0 0 1.5px #3a3d42,0 40px 90px rgba(0,0,0,.25);max-width:calc(100vw - 44px)}
+.phone-in{position:relative;width:100%;height:100%;border-radius:46px;overflow:hidden;background:var(--b-bg)}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:120px;height:34px;border-radius:20px;background:#000;z-index:9}
+.sbar{position:absolute;top:0;left:0;right:0;height:52px;display:flex;justify-content:space-between;align-items:center;padding:4px 32px 0;font:600 15px -apple-system,system-ui,sans-serif;color:var(--b-ink);z-index:8;pointer-events:none}
+.au-pn{background:var(--st-ground);border-radius:28px;padding:clamp(26px,3.5vw,38px)}
+.au-pn-k{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--st-ink)}
+.au-pn-k i{width:8px;height:8px;border-radius:50%;background:var(--st-hi);box-shadow:0 0 0 3px var(--st-mark)}
+.au-pn-k.au-ctx{color:var(--st-ink2)}.au-pn-k.au-ctx i{background:var(--st-ink3);box-shadow:none}
+.au-pn-t{font-size:clamp(24px,2.6vw,30px);line-height:1.12;font-weight:700;letter-spacing:-.028em;margin:10px 0 14px;text-wrap:balance}
+.au-pn-h{margin:0;font-size:17px;line-height:1.55;color:var(--st-ink2)}
+.au-pn-h b{color:var(--st-ink);font-weight:600}
+.au-pn-o{margin-top:24px;padding-top:22px;border-top:1px solid var(--st-hair)}
+.au-pn-o .au-lab{font-size:13px;font-weight:600;color:var(--st-ink3)}
+.au-pn-o .au-val{font-size:clamp(38px,4.4vw,50px);font-weight:700;letter-spacing:-.04em;line-height:1.05;color:var(--st-accent);margin-top:6px;font-variant-numeric:tabular-nums}
+.au-pn-o .au-sub{font-size:14px;color:var(--st-ink2);margin-top:4px}
+.au-pn-a{margin:18px 0 0;font-size:14px;line-height:1.5;color:var(--st-ink2)}
+.au-pn-nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:28px;padding-top:18px;border-top:1px solid var(--st-hair);font-size:13px;color:var(--st-ink3)}
+.au-pn-nav button{background:var(--st-card);border:0;border-radius:980px;padding:8px 15px;font-size:14px;font-weight:500;color:var(--st-ink);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.au-pn-nav button:disabled{opacity:.35;cursor:default}
+.au-hint{text-align:center;font-size:14px;color:var(--st-ink3);margin:22px 0 0}
+
+/* footer */
+.au-foot{padding-block:56px 72px;border-top:1px solid var(--st-hair)}
+.au-foot details{border-bottom:1px solid var(--st-hair);padding-bottom:18px}
+.au-foot summary{cursor:pointer;font-size:17px;font-weight:600;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.au-foot summary::-webkit-details-marker{display:none}
+.au-foot summary::after{content:"+";font-size:24px;font-weight:300;color:var(--st-ink2)}
+.au-foot details[open] summary::after{content:"−"}
+.au-srcs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 48px;margin-top:18px}
+.au-srcs h4{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--st-ink3);margin:18px 0 6px}
+.au-srcs dl{margin:0}.au-srcs dt{font-size:14.5px;font-weight:600;margin-top:10px}
+.au-srcs dd{margin:3px 0 0;font-size:14px;line-height:1.5;color:var(--st-ink2)}
+.au-fine{font-size:12.5px;line-height:1.6;color:var(--st-ink3);margin:22px 0 0;max-width:80ch}
+.au-cta-line{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin-top:36px}
+.au-cta-line p{margin:0;font-size:clamp(19px,2.2vw,24px);font-weight:600;letter-spacing:-.02em;max-width:34ch}
+
+@media (max-width:900px){
+  .au-split,.au-band{grid-template-columns:1fr}
+  .au-notes{grid-template-columns:1fr}
+  .au-idea{grid-template-columns:40px 1fr}
+  .au-imp{grid-column:2;text-align:left;display:flex;align-items:baseline;gap:10px}
+  .au-imp .au-l{margin:0}
+  .au-imp .au-v{white-space:nowrap}
+  .au-stage{grid-template-columns:1fr;justify-items:center}
+  .au-pn{width:100%;max-width:520px}
+  .au-srcs{grid-template-columns:1fr}
+}
+@media (max-width:560px){.au-stats{grid-template-columns:1fr}.au-stat{padding:22px 0 0}.au-nums{flex-direction:column;gap:18px}}
+
+/* ================= extras (audit side): video, language, phone view + QR, paywall today vs proposed, ?tour ================= */
+[hidden]{display:none!important}
+/* the device never scrolls: off-screen slides would otherwise make it scrollable by focus / scrollIntoView */
+.phone-in,.scr{overflow:clip}
+/* hero: walkthrough link */
+.au-play::before{content:"▶";font-size:.72em;margin-right:7px;position:relative;top:-1px}
+/* video dialog */
+.au-vid{border:0;padding:0;background:transparent;max-width:min(1120px,94vw);width:100%;overflow:visible}
+.au-vid::backdrop{background:rgba(0,0,0,.74);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.au-vid-in{background:#000;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.au-vid video{display:block;width:100%;aspect-ratio:16/9;background:#000}
+.au-vid-bar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 4px 0;font-size:14px}
+.au-vid-bar a{color:#fff;opacity:.85}
+.au-vid-x{background:rgba(255,255,255,.16);border:0;color:#fff;border-radius:980px;padding:8px 16px;font-size:14px;cursor:pointer}
+/* language switch */
+.au-langrow{display:flex;justify-content:center;align-items:center;gap:12px;margin:18px 0 0;font-size:13.5px;color:var(--st-ink2);flex-wrap:wrap}
+.au-lsw{display:inline-flex;gap:2px;padding:3px;background:var(--st-ground);border-radius:980px}
+.au-lsw button{border:0;background:none;padding:6px 13px;border-radius:980px;font-size:13.5px;font-weight:500;color:var(--st-ink2);cursor:pointer;white-space:nowrap}
+.au-lsw button.on{background:var(--st-card);color:var(--st-ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+/* QR card (desktop) / full-screen button (phone) */
+.au-qr{display:flex;align-items:center;gap:18px;margin:26px auto 0;max-width:500px;background:var(--st-ground);border-radius:22px;padding:14px 22px 14px 14px}
+.au-qr img{width:112px;height:112px;border-radius:12px;image-rendering:pixelated;flex:none;background:#fff}
+.au-qr b{display:block;font-size:17px;font-weight:600;letter-spacing:-.01em}
+.au-qr p{margin:4px 0 0;font-size:14.5px;line-height:1.45;color:var(--st-ink2)}
+.au-mobw{display:none;text-align:center;margin-top:22px}
+@media (max-width:900px){.au-qr{display:none}.au-mobw{display:block}}
+/* paywall: today vs proposed */
+.au-cmp{display:grid;grid-template-columns:minmax(0,290px) minmax(0,1fr) minmax(0,290px);gap:clamp(24px,4vw,52px);align-items:center;margin-top:clamp(32px,5vw,52px)}
+.au-cmp figure{margin:0;text-align:center}
+.au-cmp figure img{display:block;width:100%;height:auto;filter:drop-shadow(0 24px 44px rgba(0,0,0,.18))}
+.au-cmp figcaption{margin-top:14px;font-size:15px;font-weight:600}
+.au-cmp figcaption span{color:var(--st-ink2);font-weight:400}
+.au-cmp-go{border:0;padding:0;background:none;cursor:pointer;display:block;width:100%;transition:transform .3s}
+.au-cmp-go:hover{transform:translateY(-4px)}
+.au-chg{list-style:none;margin:0;background:var(--st-card);border-radius:24px;padding:4px clamp(18px,2.4vw,28px)}
+.au-chg li{padding:15px 0;border-top:1px solid var(--st-hair)}
+.au-chg li:first-child{border-top:0}
+.au-chg h4{margin:0 0 7px;font-size:16px;font-weight:600;letter-spacing:-.01em;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.au-chg h4 i{font-style:normal;font-size:12px;font-weight:600;color:var(--st-accent);background:var(--st-mark);border-radius:6px;padding:2px 8px;white-space:nowrap}
+.au-was,.au-now{display:grid;grid-template-columns:78px 1fr;gap:8px;font-size:14.5px;line-height:1.42}
+.au-was{color:var(--st-ink3)}
+.au-now{color:var(--st-ink);margin-top:3px}
+.au-was em,.au-now em{font-style:normal;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
+.au-now em{color:var(--st-link)}
+.au-kept{margin:22px 0 0;font-size:14px;color:var(--st-ink2);text-align:center}
+@media (max-width:900px){.au-cmp{grid-template-columns:1fr 1fr;gap:18px}.au-chg{grid-column:1 / -1;order:3}.au-was,.au-now{grid-template-columns:70px 1fr}}
+
+/* ?app — the prototype full screen on a real phone, with a bar that opens the idea panel */
+html.appmode,html.appmode body{height:100%;overflow:hidden;background:#000}
+html.appmode .au-nav,html.appmode .au-top-hero,html.appmode #why,html.appmode #ideas,html.appmode #compare,html.appmode .au-foot,
+html.appmode .au-proto-h,html.appmode #prototype .au-langrow,html.appmode #chips,html.appmode .au-hint,html.appmode .au-qr,html.appmode .au-mobw{display:none!important}
+html.appmode #prototype{padding:0;background:#000}
+html.appmode #prototype .au-wrap{padding:0;max-width:none}
+html.appmode .au-stage{display:block;margin:0}
+html.appmode .phone{position:fixed;top:0;left:0;right:0;margin:0 auto;width:min(100%,480px);height:calc(100% - 56px - env(safe-area-inset-bottom,0px));max-width:none;border-radius:0;padding:0;box-shadow:none;background:#000}
+html.appmode .phone-in{border-radius:0}
+html.appmode .island,html.appmode .sbar{display:none}
+html.appmode .scr .s-pad{padding-top:max(58px,calc(env(safe-area-inset-top,0px) + 16px))}
+html.appmode .scr .s-x,html.appmode .scr .s-lang{top:max(54px,calc(env(safe-area-inset-top,0px) + 10px))}
+.au-appbar,.au-scrim{display:none}
+html.appmode .au-appbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:70;height:calc(56px + env(safe-area-inset-bottom,0px));padding:0 12px env(safe-area-inset-bottom,0px) 16px;align-items:center;gap:12px;background:#0b0b0c;border-top:1px solid rgba(255,255,255,.1);color:#fff}
+.au-ab-why{flex:1;min-width:0;display:flex;align-items:center;gap:9px;background:none;border:0;color:#fff;font-size:14px;font-weight:500;text-align:left;cursor:pointer;padding:0}
+.au-ab-why i{width:8px;height:8px;border-radius:50%;background:var(--st-hi);flex:none}
+.au-ab-why span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.au-ab-why em{font-style:normal;color:rgba(255,255,255,.6);margin-left:auto;flex:none;font-size:13px}
+.au-appbar .au-lsw{background:rgba(255,255,255,.12)}
+.au-appbar .au-lsw button{color:rgba(255,255,255,.75);padding:5px 11px}
+.au-appbar .au-lsw button.on{background:#fff;color:#000}
+html.appmode #panel{position:fixed;left:0;right:0;bottom:0;z-index:80;max-width:none;width:auto;margin:0 auto;border-radius:24px 24px 0 0;max-height:78%;overflow:auto;transform:translateY(105%);transition:transform .3s cubic-bezier(.3,.7,.2,1);padding-bottom:calc(26px + env(safe-area-inset-bottom,0px))}
+html.appmode.au-open #panel{transform:none}
+html.appmode.au-open .au-scrim{display:block;position:fixed;inset:0;z-index:75;background:rgba(0,0,0,.5)}
+
+/* ?tour — 1280×720 walkthrough frames (record-video.sh renders them into assets/walkthrough.mp4) */
+.au-tour{display:none}
+html.tourmode,html.tourmode body{overflow:hidden;background:var(--st-ground)}
+html.tourmode body *{visibility:hidden}
+html.tourmode .phone,html.tourmode .phone *,html.tourmode .au-tour,html.tourmode .au-tour *{visibility:visible}
+html.tourmode .phone{position:fixed;left:170px;top:44px;margin:0;transform:scale(.755);transform-origin:0 0;box-shadow:0 0 0 1.5px #3a3d42,0 34px 80px rgba(0,0,0,.22);z-index:5;max-width:none}
+html.tourmode .au-tour{display:block;position:fixed;inset:0;z-index:6;pointer-events:none;color:var(--st-ink)}
+.au-tb{position:absolute;left:590px;top:30px;display:flex;align-items:center;gap:10px;font-size:16px;font-weight:600}
+.au-tb img{width:26px;height:26px;border-radius:7px}
+.au-tb small{font-size:16px;font-weight:400;color:var(--st-ink2)}
+.au-tby{position:absolute;right:48px;top:32px;font-size:14px;color:var(--st-ink3)}
+.au-tcap{position:absolute;left:590px;right:60px;top:50%;transform:translateY(-50%)}
+.au-tk{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:600}
+.au-tk i{width:9px;height:9px;border-radius:50%;background:var(--st-hi);box-shadow:0 0 0 3px var(--st-mark)}
+.au-tk.au-ctx{color:var(--st-ink2)}.au-tk.au-ctx i{background:var(--st-ink3);box-shadow:none}
+.au-tt{font-size:46px;line-height:1.06;font-weight:700;letter-spacing:-.035em;margin:14px 0 14px;text-wrap:balance}
+.au-tl{font-size:23px;line-height:1.36;color:var(--st-ink2);letter-spacing:-.01em;margin:0;max-width:28ch}
+.au-to{margin-top:28px;padding-top:22px;border-top:1px solid var(--st-hair)}
+.au-to small{display:block;font-size:14px;font-weight:600;color:var(--st-ink3)}
+.au-to b{display:inline-block;font-size:62px;font-weight:700;letter-spacing:-.045em;line-height:1.08;color:var(--st-accent);margin-top:4px}
+.au-to span{display:block;font-size:16px;color:var(--st-ink2);margin-top:2px}
+.au-tprog{position:absolute;left:48px;right:48px;bottom:22px;height:4px;border-radius:3px;background:var(--st-hair);overflow:hidden}
+.au-tprog i{display:block;height:100%;background:var(--st-hi)}
+.au-ttap{position:absolute;left:0;top:0;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:rgba(255,255,255,.5);box-shadow:0 0 0 2.5px rgba(255,255,255,.9),0 6px 16px rgba(0,0,0,.35);opacity:0}
+.au-tintro,.au-tend{position:absolute;inset:0;background:var(--st-ground);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0}
+.au-tintro .au-lede{margin-top:18px}
+.au-te-h{font-size:46px;line-height:1.08;font-weight:700;letter-spacing:-.035em;margin:0;max-width:18ch;text-wrap:balance}
+.au-te-n{display:flex;gap:64px;margin-top:30px}
+.au-te-n small{display:block;font-size:14px;color:var(--st-ink2)}
+.au-te-n b{display:block;font-size:76px;font-weight:700;letter-spacing:-.045em;line-height:1;color:var(--st-accent);margin:4px 0 6px}
+.au-te-n span{font-size:15px;color:var(--st-ink2)}
+.au-te-q{display:flex;align-items:center;gap:18px;margin-top:34px;background:var(--st-card);border-radius:20px;padding:12px 24px 12px 12px;text-align:left}
+.au-te-q img{width:104px;height:104px;border-radius:10px;image-rendering:pixelated}
+.au-te-q b{display:block;font-size:18px;font-weight:600}
+.au-te-q span{display:block;font-size:15px;color:var(--st-link);margin-top:3px}
+.au-te-f{position:absolute;bottom:44px;left:0;right:0;font-size:13px;color:var(--st-ink3);margin:0}
+
+/* ---------- screen engine (layout only, no colours) ---------- */
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--b-bg);color:var(--b-ink);font-family:var(--b-font);
+     transform:translateX(100%);transition:transform .32s cubic-bezier(.3,.7,.2,1);overflow:hidden;text-align:left;line-height:normal;font-size:16px}
+.scr.is-active{transform:none;z-index:2}.scr.is-past{transform:translateX(-28%)}.scr.under{transform:none;z-index:1}
+.scr.sheet{transform:translateY(100%)}.scr.sheet.is-active{transform:none}
+.nofx,.nofx *{transition:none!important}
+.shot .scr{transition:none!important}
+/* ?phone — just the device at (10,10), for shoot.sh and hero-stills.sh (&clear = transparent ground) */
+.phoneonly body{background:#141615}
+.phoneonly.clear body{background:transparent}
+.phoneonly body *{visibility:hidden}
+.phoneonly .phone,.phoneonly .phone *{visibility:visible}
+.phoneonly .phone{position:fixed;top:10px;left:10px;z-index:99;box-shadow:none;max-width:none;margin:0}
+
+/* SCREENS:START — styles for the app's screens. RULE: colours only via var(--b-*), or white/black
+   with alpha (scrims, shadows). RULE: no class name that the audit page above already uses
+   (.hero .btn .chip .list .idea .note .stat .band .num .hint .display .split …) — brand-check refuses collisions. */
+.body{flex:1;display:flex;flex-direction:column;padding:60px 22px 26px;gap:12px;overflow:auto;position:relative;z-index:1}
+.h1{font-weight:500;font-size:26px;line-height:1.22;margin:0;letter-spacing:-.01em;color:var(--b-ink)}
+.sub{color:var(--b-ink2);font-size:14.5px;line-height:1.45;margin:0}
+.cta{margin-top:auto;width:100%;border:0;border-radius:var(--b-pill);background:var(--b-primary);color:var(--b-primary-ink);font:600 17px var(--b-font);padding:16px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.x{position:absolute;top:54px;right:16px;background:none;border:0;color:var(--b-ink);font-size:22px;cursor:pointer;z-index:3;font-family:var(--b-font)}
+.o-xl{position:absolute;top:54px;left:16px;background:none;border:0;color:var(--b-ink);font-size:22px;cursor:pointer;z-index:3;font-family:var(--b-font)}
+/* ad */
+.o-ad{background:black;color:white}
+.o-ad .body{padding:0;gap:0}
+.o-adv{position:relative;flex:1;overflow:hidden;background:black}
+.o-adv img{width:100%;height:100%;object-fit:cover;display:block}
+.o-adtop{position:absolute;top:50px;left:14px;right:14px;display:flex;align-items:center;gap:8px;font:600 13px var(--b-font);color:white;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.o-adtop img{width:30px;height:30px;border-radius:50%;background:white;object-fit:contain}
+.o-adtop small{display:block;font-weight:400;font-size:11px;opacity:.85}
+.o-adcap{position:absolute;left:14px;right:70px;bottom:118px;font:500 14px/1.4 var(--b-font);color:white;text-shadow:0 1px 4px rgba(0,0,0,.7)}
+.o-adcard{position:absolute;left:12px;right:12px;bottom:26px;background:rgba(255,255,255,.96);color:black;border-radius:12px;padding:11px 12px;display:flex;align-items:center;gap:10px}
+.o-adcard img{width:40px;height:40px;border-radius:9px;object-fit:cover}
+.o-adcard div{flex:1;min-width:0}
+.o-adcard small{display:block;font:600 10.5px var(--b-font);letter-spacing:.04em;color:rgba(0,0,0,.55)}
+.o-adcard b{display:block;font:600 13.5px/1.25 var(--b-font)}
+.o-adbtn{border:0;border-radius:8px;background:black;color:white;font:600 13px var(--b-font);padding:9px 13px;cursor:pointer;flex:none}
+.o-yt{display:flex;flex-direction:column;flex:1;background:black;padding-top:46px}
+.o-yt .o-ytv{position:relative;aspect-ratio:1/1;width:100%;overflow:hidden}
+.o-yt .o-ytv img{width:100%;height:100%;object-fit:cover;display:block}
+.o-ytbar{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.3)}.o-ytbar i{display:block;width:72%;height:100%;background:white}
+.o-ytmeta{padding:14px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
+.o-ytmeta small{font:500 12px var(--b-font);color:rgba(255,255,255,.7)}
+.o-ytmeta p{margin:0;font:600 16px/1.35 var(--b-font);color:white}
+.o-ytrow{display:flex;align-items:center;gap:10px;margin-top:auto;background:rgba(255,255,255,.08);border-radius:12px;padding:10px 12px}
+.o-ytrow img{width:40px;height:40px;border-radius:9px}
+.o-ytrow div{flex:1}.o-ytrow b{display:block;font:600 14px var(--b-font)}.o-ytrow span{font:400 12px var(--b-font);color:rgba(255,255,255,.7)}
+.o-ytbtn{border:0;border-radius:999px;background:white;color:black;font:600 13.5px var(--b-font);padding:9px 16px;cursor:pointer}
+/* welcome */
+.o-worm{width:112px;height:112px;object-fit:contain;align-self:center;margin-top:-4px}
+.o-chips{display:flex;flex-direction:column;align-items:flex-start;gap:11px;margin-top:6px}
+.o-chip{border:0;border-radius:var(--b-pill);background:var(--b-surface);color:var(--b-ink);font:400 16px var(--b-font);padding:9px 19px;cursor:pointer}
+.o-chip.on{background:var(--b-accent2);color:var(--b-ink)}
+.o-echo{display:inline-flex;align-self:flex-start;gap:6px;align-items:center;background:var(--b-surface);border-radius:var(--b-pill);padding:5px 11px;font:600 12px var(--b-font);color:var(--b-ink2)}
+.o-h3{font-weight:500;font-size:20px;margin:8px 0 0;color:var(--b-ink)}
+.o-sel{display:flex;justify-content:space-between;align-items:center;width:170px;background:var(--b-surface);border-radius:8px;padding:12px 14px;font:400 15px var(--b-font)}
+.o-fine{font:400 12.5px var(--b-font);color:var(--b-ink2);text-align:center;margin:0}
+/* creation guide */
+.o-ctr{text-align:center}
+.o-field{border:0;border-bottom:1.5px solid var(--b-accent2);padding:10px 2px;font:400 15px/1.4 var(--b-font);color:var(--b-ink);background:none}
+.o-link{background:none;border:0;color:var(--b-ink);font:400 15px var(--b-font);text-decoration:underline;cursor:pointer;align-self:center;padding:4px}
+.o-k{font:600 12px var(--b-font);color:var(--b-ink2);letter-spacing:.02em;margin:6px 0 -4px}
+.o-idea{display:block;width:100%;text-align:left;border:1.5px solid transparent;background:var(--b-surface);border-radius:8px;padding:11px 13px;font:400 14.5px/1.4 var(--b-font);color:var(--b-ink);cursor:pointer}
+.o-idea.on{border-color:var(--b-accent2)}
+.o-tag{display:inline-flex;align-self:center;gap:6px;background:var(--b-surface);border-radius:var(--b-pill);padding:6px 12px;font:600 12.5px var(--b-font);color:var(--b-ink2)}
+.o-dots{display:flex;gap:6px;justify-content:center;margin-top:2px}.o-dots i{width:12px;height:8px;border-radius:5px;background:var(--b-line)}.o-dots i.on{width:44px;background:var(--b-ink)}
+.o-name{background:var(--b-surface);border:0;border-radius:8px;padding:14px;font:400 16px var(--b-font);color:var(--b-ink);width:100%}
+.o-av{width:74px;height:74px;border-radius:50%;background:var(--b-surface);display:grid;place-items:center;font:600 28px var(--b-font);color:var(--b-ink);align-self:center;border:2px solid var(--b-accent2)}
+.o-ghost{width:100%;border:1.5px solid var(--b-primary);border-radius:var(--b-pill);background:var(--b-bg);color:var(--b-ink);font:600 16px var(--b-font);padding:14px;cursor:pointer}
+/* review */
+.o-hd{display:flex;align-items:center;gap:14px;font:500 22px var(--b-font);color:var(--b-ink);margin-top:-8px}
+.o-hd button{background:none;border:0;font-size:24px;color:var(--b-ink);cursor:pointer;padding:0}
+.o-lab{font:600 13.5px var(--b-font);color:var(--b-ink);margin:2px 0 -6px}
+.o-box{background:var(--b-surface);border-radius:8px;padding:12px 13px;font:400 14.5px/1.4 var(--b-font);color:var(--b-ink);display:flex;justify-content:space-between;gap:8px}
+.o-box.ph{color:var(--b-ink2)}
+.o-cost{display:flex;align-items:center;justify-content:center;gap:8px;font:400 13px var(--b-font);color:var(--b-ink2);margin-top:auto}
+.o-cost b{color:var(--b-ink);font-weight:600}
+/* writing */
+.o-load{align-items:center;justify-content:center;text-align:center;gap:16px}
+.o-bar{width:72%;height:6px;border-radius:6px;background:var(--b-surface);overflow:hidden}.o-bar i{display:block;height:100%;width:64%;background:var(--b-accent2);border-radius:6px}
+.o-lines{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px;font:400 14.5px var(--b-font);color:var(--b-ink2)}
+.o-lines li b{color:var(--b-ink);font-weight:600}
+.o-tip{font:400 13px var(--b-font);color:var(--b-ink2);background:var(--b-surface);border-radius:10px;padding:10px 12px;max-width:290px}
+/* chapter (their reader) */
+.o-read{background:var(--b-reader)}
+.o-read .body{padding:0;gap:0}
+.o-cover{height:200px;flex:none;overflow:hidden;position:relative}
+.o-cover img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block}
+.o-rtxt{padding:16px 22px 0;display:flex;flex-direction:column;gap:10px}
+.o-rt{font-weight:600;font-size:22px;line-height:1.2;margin:0;color:black}
+.o-rm{font:400 12.5px var(--b-font);color:var(--b-ink2);margin:0}
+.o-rp{font-size:16.5px;line-height:1.75;margin:0;color:black}
+.o-next{font-size:18px;text-align:center;margin:4px 0 0;color:black}
+.o-opt{border:1.5px solid var(--b-accent2);background:var(--b-surface);border-radius:22px;padding:10px 14px;font:400 13.5px/1.35 var(--b-font);color:var(--b-ink);text-align:left;cursor:pointer}
+.o-keep{margin-top:auto;background:var(--b-bg);border-radius:22px 22px 0 0;box-shadow:0 -6px 22px rgba(0,0,0,.12);padding:16px 20px 22px;display:flex;flex-direction:column;gap:9px;position:relative}
+.o-keep h2{font-weight:500;font-size:19px;margin:0;color:var(--b-ink)}
+.o-keep p{margin:0}
+.o-apple{width:100%;border:0;border-radius:var(--b-pill);background:black;color:white;font:600 15.5px var(--b-font);padding:13px;cursor:pointer}
+.o-goog{width:100%;border:1.5px solid var(--b-line);border-radius:var(--b-pill);background:var(--b-bg);color:var(--b-ink);font:600 15.5px var(--b-font);padding:12px;cursor:pointer}
+/* get credits */
+.o-cr{display:flex;flex-direction:column;gap:6px;background:var(--b-surface);border-radius:var(--b-radius);padding:13px 14px;border:2px solid transparent;position:relative}
+.o-cr.best{border-color:var(--b-accent2);background:var(--b-bg)}
+.o-cr h3{margin:0;font:600 15.5px var(--b-font);color:var(--b-ink)}
+.o-cr p{margin:0;font:400 13.5px/1.4 var(--b-font);color:var(--b-ink2)}
+.o-cr .o-big{font:600 14px/1.35 var(--b-font);color:var(--b-ink)}
+.o-flag{position:absolute;top:-10px;right:12px;background:var(--b-accent2);color:white;font:700 10.5px var(--b-font);letter-spacing:.04em;padding:3px 8px;border-radius:6px}
+.o-sm{align-self:flex-start;border:1.5px solid var(--b-ink);border-radius:var(--b-pill);background:none;color:var(--b-ink);font:600 13px var(--b-font);padding:7px 14px;cursor:pointer;margin-top:4px}
+.o-sm.red{background:var(--b-primary);border-color:var(--b-primary);color:var(--b-primary-ink)}
+.o-bal{align-self:flex-end;font:600 14px var(--b-font);color:var(--b-ink)}
+/* paywall */
+.o-pw .body{padding:0;gap:0}
+.o-top{background:var(--b-grad);padding:58px 22px 18px;color:white;display:flex;gap:14px;align-items:flex-end;flex:none}
+.o-top img{width:84px;height:104px;object-fit:cover;border-radius:10px;box-shadow:0 6px 16px rgba(0,0,0,.3);flex:none}
+.o-top h1{font-weight:600;font-size:22px;line-height:1.2;margin:0;color:white}
+.o-pwb{padding:14px 20px 18px;display:flex;flex-direction:column;gap:9px;flex:1}
+.o-ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px;font:400 13.5px/1.35 var(--b-font);color:var(--b-ink)}
+.o-proof{display:flex;flex-direction:column;gap:3px;background:var(--b-surface);border-radius:12px;padding:10px 12px}
+.o-proof b{font:600 13px var(--b-font);color:var(--b-ink)}
+.o-proof .o-q{font:400 13px/1.4 var(--b-font);color:var(--b-ink2)}
+.o-stars{color:var(--b-primary);letter-spacing:1px}
+.o-plan{display:flex;justify-content:space-between;align-items:center;background:var(--b-bg);border:2px solid var(--b-line);border-radius:12px;padding:11px 13px;color:var(--b-ink);cursor:pointer;font-family:var(--b-font);width:100%;text-align:left;position:relative}
+.o-plan.on{border-color:var(--b-accent2)}
+.o-plan b{display:block;font:600 15px var(--b-font)}
+.o-plan small{font:400 12.5px var(--b-font);color:var(--b-ink2)}
+.o-plan .o-pr{text-align:right;font:600 15px var(--b-font)}
+.o-save{position:absolute;top:-9px;left:12px;background:var(--b-accent2);color:white;font:700 10px var(--b-font);letter-spacing:.04em;padding:2px 7px;border-radius:5px}
+.o-carry{font:400 12px/1.4 var(--b-font);color:var(--b-ink2);text-align:center;margin:0}
+.o-legal{display:flex;justify-content:center;gap:16px;font:400 11.5px var(--b-font);color:var(--b-ink2)}
+.o-pw .cta{margin-top:4px}
+/* offer sheet */
+.o-sheet{background:transparent}
+.o-sheet .body{margin-top:auto;flex:none;background:var(--b-bg);border-radius:24px 24px 0 0;box-shadow:0 -10px 30px rgba(0,0,0,.25);padding:14px 22px 28px;gap:12px}
+.o-grab{width:40px;height:5px;border-radius:3px;background:var(--b-line);align-self:center}
+.o-pack{display:flex;align-items:center;gap:12px;background:var(--b-surface);border-radius:var(--b-radius);padding:13px 14px;border:2px solid var(--b-accent2)}
+.o-pack .o-n{font:700 26px var(--b-font);color:var(--b-accent2);min-width:44px;text-align:center}
+.o-pack div{flex:1}.o-pack b{display:block;font:600 15px var(--b-font);color:var(--b-ink)}.o-pack small{font:400 12.5px var(--b-font);color:var(--b-ink2)}
+.o-pack .o-pr{font:600 16px var(--b-font);color:var(--b-ink)}
+.o-sheet .x{top:14px}
+/* SCREENS:END */
+</style>
+</head>
+<body>
+
+<nav class="au-nav" aria-label="Sections">
+  <div class="au-nav-in">
+    <div class="au-brand">
+      <img src="assets/brand/appstore-icon.jpg" alt="">
+      <span>Growth Audit <small>· Okudu</small></span>
+    </div>
+    <a class="au-opt" href="#why">Why this</a>
+    <a href="#ideas">Five ideas</a>
+    <a class="au-opt" href="#ads">Your ads</a>
+    <a href="#prototype">Prototype</a>
+    <a class="au-opt" href="#compare" id="navCompare" hidden>Paywall</a>
+  </div>
+</nav>
+
+<header class="au-top-hero" id="top">
+  <div class="au-wrap">
+    <p class="au-eyebrow"><i></i>Growth Audit · November 2026</p>
+    <h1 class="au-display">Okudu</h1>
+    <p class="au-lede">Five ideas to turn more readers, parents and fanfic writers into subscribers, and a first screen that keeps your ad’s promise. <span>All built into your own story flow, so you can tap through it from the ad.</span></p>
+    <p class="au-byline">Prepared by Adapty for the Okudu team</p>
+    <div class="au-ctas">
+      <a class="au-btn" href="#ideas">See the five ideas</a>
+      <a class="au-lnk" href="#prototype">Open the prototype</a>
+      <button type="button" class="au-lnk au-play" id="heroVideo" hidden>Watch the 30-second walkthrough</button>
+    </div>
+  </div>
+  <!-- filled from CONTENT.hero: three screen ids → assets/hero/<id>.png (make them with hero-stills.sh) -->
+  <div class="au-phones" id="heroPhones" aria-label="Three screens from the prototype"></div>
+</header>
+
+<section class="au-sec au-white" id="why">
+  <div class="au-wrap">
+    <div class="au-split">
+      <div>
+        <p class="au-kicker">Why you’re seeing this</p>
+        <h2 class="au-h2">30,000 subscription apps taught us what moves conversion. <span>Here’s what we’d test first at Okudu.</span></h2>
+      </div>
+      <div>
+        <p>Adapty runs subscriptions for <b>more than 30,000 apps</b>, so we see which onboarding and paywall changes lift revenue across the whole market, not just inside one app.</p>
+        <p>We pointed that at Okudu. We took <b>your own screens, copy and prices</b> from your live app at app.okudu.ai, your App Store listing and site, <b>and two of your live ads</b>, and rebuilt the path from the ad to Premium around the five ideas with the most potential.</p>
+      </div>
+    </div>
+    <div class="au-stats">
+      <div class="au-stat"><b>30,000+</b><span>apps run their subscriptions on Adapty</span></div>
+      <div class="au-stat"><b>5</b><span>ideas, each built as a working screen</span></div>
+      <div class="au-stat"><b>0</b><span>changes to your art direction</span></div>
+    </div>
+    <div class="au-notes">
+      <div class="au-note">
+        <div class="au-ic"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4 6.8 19.1l1-5.8L3.5 9.2l5.9-.9z"/></svg></div>
+        <h3>Five ideas, not fifteen</h3>
+        <p>We’re not proposing to rebuild every screen. These are the changes with the highest potential, ranked by what we’d test first.</p>
+      </div>
+      <div class="au-note">
+        <div class="au-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17M3.5 12h17"/></svg></div>
+        <h3>Your design, not ours</h3>
+        <p>Every colour, control and price in the prototype is Okudu’s. We changed the order and what gets shown.</p>
+      </div>
+      <div class="au-note">
+        <div class="au-ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v6.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-13A1.5 1.5 0 0 1 5.5 4H15"/></svg></div>
+        <h3>We hope you haven’t tried these yet</h3>
+        <p>We work from the outside, so we can’t see your iOS build or your test history. If you’ve already run one of these, tell us and we’ll go deeper on the rest.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="au-sec" id="ideas">
+  <div class="au-wrap">
+    <div class="au-ideas-h">
+      <p class="au-kicker">The shortlist</p>
+      <h2 class="au-h2">Five ideas. <span>Ranked by what we’d test first.</span></h2>
+    </div>
+    <div class="au-list" id="ideaList"></div>
+    <div class="au-band">
+      <div>
+        <p class="au-k">Potential outcome, based on Adapty data</p>
+        <h3>Together they work on four moments: what you do with the first answer, when you ask for a sign-in, how credits read when they run out, and what happens when someone says no.</h3>
+        <p class="au-fn" id="bandFn"></p>
+        <a class="au-btn" href="#prototype">Tap through the prototype</a>
+      </div>
+      <div class="au-nums" id="bandNums"></div>
+    </div>
+  </div>
+</section>
+
+<section class="au-sec au-adsec" id="ads">
+  <div class="au-wrap">
+    <div class="au-split">
+      <div>
+        <p class="au-kicker">Your ads × your flow</p>
+        <h2 class="au-h2">Keep the promise the ad made. <span>Two of your ads, two first screens.</span></h2>
+      </div>
+      <div>
+        <p>Your ads sell two different stories: a parent’s bedtime ritual on YouTube, and fanfic you steer yourself on Meta. Today both land on the same welcome, <b>“What brings you to Okudu?”</b>, and the person who just watched the ad answers it from scratch.</p>
+        <p>Flow Builder can open a different flow by where the install came from, so the first screens repeat what the ad said, and each ad is judged on the subscriptions it brings, not the installs.</p>
+      </div>
+    </div>
+    <div class="au-ads">
+      <article class="au-adc">
+        <img src="assets/ads/ad-bedtime.jpg" alt="A frame from the YouTube ad">
+        <div>
+          <p class="au-adk">Ad 1 · YouTube · a parent and child at bedtime</p>
+          <blockquote>“Choose the characters, the topic, … together. Okudu turns them into a story.”</blockquote>
+          <p class="au-adh">Ends on: Try Okudu today</p>
+          <dl>
+            <dt>Welcome</dt><dd>“Stories for kids” already chosen, ages shown, with “Tonight’s bedtime story starts here”</dd>
+            <dt>First question asked</dt><dd>The topic, with your own ideas for kids. The genre isn’t asked again (idea 4)</dd>
+          </dl>
+          <button type="button" class="au-lnk" onclick="okSeeAd('yt')">Open the flow from this ad</button>
+        </div>
+      </article>
+      <article class="au-adc">
+        <img src="assets/ads/ad-meta-fanfic.jpg" alt="A frame from the Meta ad">
+        <div>
+          <p class="au-adk">Ad 2 · Meta · links to your App Store page</p>
+          <blockquote>“Your next fanfic starts here.”</blockquote>
+          <p class="au-adh">Headline: Create any story you imagine! · Install now</p>
+          <dl>
+            <dt>Welcome</dt><dd>“Casual reading” already chosen, with “Your next fanfic starts here”</dd>
+            <dt>First question asked</dt><dd>The topic, as fanfiction, starting from your own example “Sherlock meets someone new”</dd>
+          </dl>
+          <button type="button" class="au-lnk" onclick="okSeeAd('meta')">Open the flow from this ad</button>
+        </div>
+      </article>
+    </div>
+    <p class="au-adn">Both ads are live in public sources: the Meta one in the Meta Ad Library (page OKUDU, the App Store version running since 29 October 2026), the YouTube one on your “Okudu ai” channel. On Apple Ads, the US keywords we can see are account-level: you hold 92% of searches for your own name and 54% for “create stories”, while broad single words such as “become”, “kind” and “fake” bring searches with no clear wish to write a story. This layer carries no range: only a test per ad can give one.</p>
+  </div>
+</section>
+
+<section class="au-sec au-white" id="prototype">
+  <div class="au-wrap">
+    <div class="au-proto-h">
+      <p class="au-kicker">The prototype</p>
+      <h2 class="au-h2">Every idea, inside your own story flow. <span>Starting from your ad.</span></h2>
+      <p>Tap through it like a new reader, or jump straight to an idea. Numbered chips mark the screens that carry one.</p>
+    </div>
+    <div class="au-langrow"><span>The ad they saw</span><div class="au-lsw" role="group" aria-label="The ad they saw"><button type="button" data-pick="ad:yt">Ad 1 · YouTube bedtime</button><button type="button" data-pick="ad:meta">Ad 2 · Meta fanfic</button></div></div>
+    <div class="au-langrow" id="langRow" hidden><span>Prototype language</span><div class="au-lsw" id="langSw" role="group" aria-label="Prototype language"></div></div>
+    <div class="au-seg" id="chips" role="tablist" aria-label="Screens"></div>
+    <div class="au-stage">
+      <div class="phone"><div class="phone-in">
+        <div class="island"></div>
+        <div class="sbar"><span>9:41</span><span>●●● ▮</span></div>
+
+<!-- SCREENS:START — one section.scr[data-id=ID] per screen, in flow order. Only the screens an idea lands on,
+     plus the context needed to read the flow (~8–10). Wiring: data-go="<id>" · data-back · data-pick="key:value"
+     (+ data-advance="<id>") · data-toggle="key:value" · data-bind="key" / "label:key" / "count:key" ·
+     data-requires="key" · data-show="key:value" · data-input="key" · class="scr sheet" slides up (offer paywall).
+     RULE: images only from assets/ (their app, their site, App Store) — never stock, never hotlinked.
+     Extras: data-t="key" = translatable (markup is CONTENT.langs[0]; other languages in CONTENT.i18n) — keep data-t on
+     leaf-ish elements, never on an element that also carries data-bind/data-pick/data-show;
+     data-langtoggle cycles the language (their own language pill); data-aside keeps a screen out of the flow
+     (the paywall TODAY, rendered only for the side-by-side still). -->
+<section class="scr o-ad" data-id="ad">
+  <div class="body">
+    <div class="o-adv" data-show="ad:meta">
+      <img src="assets/ads/ad-meta-fanfic.jpg" alt="">
+      <div class="o-adtop"><img src="assets/site/bookworm.png" alt=""><div>OKUDU<small>Sponsored</small></div></div>
+      <p class="o-adcap">Your next fanfic starts here.</p>
+      <div class="o-adcard"><img src="assets/brand/appstore-icon.jpg" alt=""><div><small>APPS.APPLE.COM</small><b>Create any story you imagine!</b></div><button class="o-adbtn" data-go="welcome">Install now</button></div>
+    </div>
+    <div class="o-yt" data-show="ad:yt">
+      <div class="o-ytv"><img src="assets/ads/ad-bedtime.jpg" alt=""><div class="o-ytbar"><i></i></div></div>
+      <div class="o-ytmeta">
+        <small>Sponsored · Okudu ai · YouTube</small>
+        <p>“Choose the characters, the topic, … together. Okudu turns them into a story.”</p>
+        <div class="o-ytrow"><img src="assets/brand/appstore-icon.jpg" alt=""><div><b>Okudu AI - Create Stories</b><span>App Store · Free</span></div><button class="o-ytbtn" data-go="welcome">Install</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="scr" data-id="welcome">
+  <div class="body">
+    <img class="o-worm" src="assets/site/bookworm.png" alt="">
+    <span class="o-echo" data-show="ad:meta"><span data-t="echoMeta">✨ Your next fanfic starts here</span></span>
+    <span class="o-echo" data-show="ad:yt"><span data-t="echoYt">✨ Tonight’s bedtime story starts here</span></span>
+    <h1 class="h1"><span data-t="wTitle">Welcome, bookworm!<br>What brings you to Okudu?</span></h1>
+    <div class="o-chips">
+      <button class="o-chip" data-pick="purpose:authoring"><span data-t="pA">Authoring</span></button>
+      <button class="o-chip" data-pick="purpose:reading"><span data-t="pR">Casual reading</span></button>
+      <button class="o-chip" data-pick="purpose:kids"><span data-t="pK">Stories for kids</span></button>
+      <button class="o-chip" data-pick="purpose:language"><span data-t="pL">Language learning</span></button>
+      <button class="o-chip" data-pick="purpose:other"><span data-t="pO">Other</span></button>
+    </div>
+    <div data-show="path:kids" style="display:flex;flex-direction:column;gap:10px">
+      <h2 class="o-h3"><span data-t="ages">Get stories for ages:</span></h2>
+      <div class="o-sel"><span>9-12</span><span>⌄</span></div>
+    </div>
+    <button class="cta" data-go="topic"><span data-t="start">Start exploring</span></button>
+    <p class="o-fine"><span data-t="prefs">Change preferences anytime in Settings</span></p>
+  </div>
+</section>
+
+<section class="scr" data-id="topic">
+  <button class="o-xl" data-back aria-label="Back">✕</button>
+  <div class="body">
+    <h1 class="h1 o-ctr" style="margin-top:22px"><span data-t="tTitle">How about a topic?</span></h1>
+    <p class="sub o-ctr" style="color:var(--b-ink);font-weight:600"><span data-t="tSub">Let your creativity run free!</span></p>
+    <span class="o-tag" id="genreTag"></span>
+    <div class="o-field" id="topicField"></div>
+    <button class="o-link"><span data-t="ideas">Get ideas</span></button>
+    <p class="o-k"><span data-t="insp">Get inspired or tap to pick</span></p>
+    <button class="o-idea" data-pick="topic:t1" id="ti1"></button>
+    <button class="o-idea" data-pick="topic:t2" id="ti2"></button>
+    <button class="o-idea" data-pick="topic:t3" id="ti3"></button>
+    <button class="cta" data-go="hero"><span data-t="cont">Continue</span></button>
+    <div class="o-dots"><i class="on"></i><i></i></div>
+  </div>
+</section>
+
+<section class="scr" data-id="hero">
+  <button class="o-xl" data-back aria-label="Back">✕</button>
+  <div class="body">
+    <h1 class="h1 o-ctr" style="margin-top:22px"><span data-t="hTitle">Who is the hero?</span></h1>
+    <p class="sub o-ctr" style="color:var(--b-ink);font-weight:600"><span data-t="hSub">It can be you or any character you imagine</span></p>
+    <div class="o-av" id="heroAv">E</div>
+    <p class="o-k"><span data-t="name">Name</span></p>
+    <input class="o-name" data-input="hero" aria-label="Hero name">
+    <button class="o-ghost"><span data-t="newChar">Create a new character</span></button>
+    <button class="cta" data-go="review"><span data-t="review">Review</span></button>
+    <div class="o-dots"><i></i><i class="on"></i></div>
+  </div>
+</section>
+
+<section class="scr" data-id="review">
+  <div class="body">
+    <div class="o-hd"><button data-back aria-label="Back">←</button><span data-t="rTitle">Review and start</span></div>
+    <p class="o-lab"><span data-t="lGenre">Genre</span></p>
+    <div class="o-box"><span id="rGenre"></span><span>⌄</span></div>
+    <p class="o-lab"><span data-t="lSetting">Setting</span></p>
+    <div class="o-box ph"><span data-t="phSetting">e.g. Fandom, England in 1800s, a distant planet...</span></div>
+    <p class="o-lab"><span data-t="lTopic">Topic</span></p>
+    <div class="o-box" id="rTopic"></div>
+    <p class="o-lab"><span data-t="lChars">Characters</span></p>
+    <div class="o-box"><span data-bind="hero"></span><span>›</span></div>
+    <div class="o-cost"><span data-t="cost">Chapter 1 · about 1,000 words ·</span> <b>1 ✦</b></div>
+    <button class="cta" style="margin-top:0" data-go="writing"><span data-t="create">Create</span></button>
+  </div>
+</section>
+
+<section class="scr" data-id="writing">
+  <div class="body o-load">
+    <img class="o-worm" src="assets/site/bookworm.png" alt="">
+    <h1 class="h1"><span data-t="wrTitle">Writing chapter 1…</span></h1>
+    <div class="o-bar"><i></i></div>
+    <ul class="o-lines"><li id="wl1"></li><li id="wl2"></li></ul>
+    <p class="o-tip"><span data-t="tip">Tip: Choose your own destiny at the end of each chapter</span></p>
+  </div>
+</section>
+
+<section class="scr o-read" data-id="chapter">
+  <div class="body">
+    <div class="o-cover"><img src="assets/crop/cover-kids.jpg" alt="" data-show="path:kids"><img src="assets/crop/cover-fanfic.jpg" alt="" data-show="path:story"></div>
+    <div class="o-rtxt">
+      <h1 class="o-rt" id="chT"></h1>
+      <p class="o-rm" id="chM"></p>
+      <p class="o-rp" id="chP"></p>
+      <p class="o-next"><span data-t="next">What's next?</span></p>
+      <button class="o-opt" id="chO1" data-go="credits"></button>
+    </div>
+    <div class="o-keep">
+      <h2 id="keepT"></h2>
+      <p class="sub"><span data-t="keepS">Sign in to save it and choose what happens next.</span></p>
+      <button class="o-apple" data-go="credits"><span data-t="apple"> Continue with Apple</span></button>
+      <button class="o-goog" data-go="credits"><span data-t="google">Continue with Google</span></button>
+      <p class="o-fine"><span data-t="trial">First time users get free trial credits!</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="scr" data-id="credits">
+  <div class="body">
+    <div class="o-hd"><button data-back aria-label="Back">←</button><span data-t="gc">Get credits</span></div>
+    <h1 class="h1" id="crT" style="font-size:23px"></h1>
+    <p class="sub"><span data-t="crS">1 credit writes 1 chapter of about 1,000 words. Here’s how to get the next ones.</span></p>
+    <div class="o-cr">
+      <h3><span data-t="free">Free credits</span></h3>
+      <p><span data-t="ad1">Watch an ad to get 1 credit. Twice a day.</span></p>
+      <p class="o-big"><span data-t="freeN">Up to 2 chapters a day, with ads</span></p>
+      <button class="o-sm"><span data-t="watch">Watch an ad</span></button>
+    </div>
+    <div class="o-cr best">
+      <span class="o-flag"><span data-t="bestV">BEST VALUE</span></span>
+      <h3>Premium</h3>
+      <p><span data-t="prem">Best value per credit, no ads and premium features.</span></p>
+      <p class="o-big"><span data-t="premN">Credits every month: each one a chapter. Unused ones carry over.</span></p>
+      <button class="o-sm red" data-go="paywall"><span data-t="plans">View plans</span></button>
+    </div>
+    <div class="o-cr">
+      <h3><span data-t="packs">Credit packs that never expire</span></h3>
+      <p><span data-t="packN">10 credits for $6.49: 10 chapters, $0.65 per credit</span></p>
+      <button class="o-sm" data-go="offer"><span data-t="vpacks">View packs</span></button>
+    </div>
+  </div>
+</section>
+
+<section class="scr o-pw" data-id="paywall">
+  <button class="x" data-go="offer" aria-label="Close" style="color:white">✕</button>
+  <div class="body">
+    <div class="o-top">
+      <img src="assets/crop/cover-kids.jpg" alt="" data-show="path:kids"><img src="assets/crop/cover-fanfic.jpg" alt="" data-show="path:story">
+      <h1 id="pwT"></h1>
+    </div>
+    <div class="o-pwb">
+      <p class="sub"><span data-t="pwS">Get Premium to create more stories, remove ads, and more.</span></p>
+      <ul class="o-ul">
+        <li><span data-t="b1">✅ Credits every month for your own stories</span></li>
+        <li><span data-t="b2">✅ Choice of AI writer and artist</span></li>
+        <li><span data-t="b3">✅ Unlimited editing</span></li>
+        <li><span data-t="b4">✅ Ad-free, uninterrupted experience</span></li>
+        <li><span data-t="b5">✅ Premium voices to bring stories to life</span></li>
+      </ul>
+      <div class="o-proof"><b><span class="o-stars">★★★★★</span> <span data-t="rating">4.6 · 445 ratings on the App Store</span></b><span class="o-q" id="pwQ"></span></div>
+      <button class="o-plan" data-pick="plan:year" id="planYear"><span class="o-save"><span data-t="save">SAVE 17%</span></span><span><b><span data-t="annual">Bookworm Annual</span></b><small><span data-t="perMo">$10.00 a month, billed yearly</span></small></span><span class="o-pr" style="white-space:nowrap"><span data-t="yr">$119.99/year</span></span></button>
+      <button class="o-plan" data-pick="plan:month"><span><b><span data-t="monthly">Bookworm</span></b><small><span data-t="mBill">Billed monthly</span></small></span><span class="o-pr" style="white-space:nowrap"><span data-t="mo">$11.99/month</span></span></button>
+      <button class="cta" id="pwC"></button>
+      <p class="o-carry"><span data-t="carry">Unused credits carry over, up to 2x your monthly amount. Cancel anytime.</span></p>
+      <div class="o-legal"><span data-t="terms">Terms</span><span data-t="privacy">Privacy</span><span data-t="restore">Restore</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="scr sheet o-sheet" data-id="offer">
+  <div class="body">
+    <button class="x" data-go="paywall" aria-label="Close">✕</button>
+    <div class="o-grab"></div>
+    <img class="o-worm" src="assets/site/bookworm.png" alt="" style="width:84px;height:84px">
+    <h1 class="h1 o-ctr"><span data-t="oT">Not ready for a plan?</span></h1>
+    <p class="sub o-ctr" id="ofS"></p>
+    <div class="o-pack"><span class="o-n">10</span><div><b><span data-t="oP">Credit pack that never expires</span></b><small><span data-t="oPc">$0.65 per credit · no subscription</span></small></div><span class="o-pr"><span data-t="pk">$6.49</span></span></div>
+    <button class="cta" style="margin-top:4px"><span data-t="oC">Get 10 credits for $6.49</span></button>
+    <button class="o-link"><span data-t="oAd">Or watch an ad to get 1 credit. Twice a day.</span></button>
+  </div>
+</section>
+<!-- SCREENS:END -->
+
+      </div></div>
+      <div class="au-pn" id="panel" aria-live="polite"></div>
+    </div>
+    <p class="au-hint">Switch the ad above the screens and the whole story follows it. Type a hero’s name on the Hero screen. Close Premium with ✕ to see idea 5. German, with German prices and your app’s own German copy, is one tap away.</p>
+    <!-- shown when CONTENT.liveUrl is set: assets/qr-app.png = qr.swift "<liveUrl>?app" -->
+    <div class="au-qr" id="qrCard" hidden><img src="assets/qr-app.png" alt="QR code that opens the prototype full screen"><div><b>Try it on your phone</b><p>Scan to open the prototype full screen, the way a new user would see it.</p></div></div>
+    <div class="au-mobw" id="qrMob" hidden><a class="au-btn" href="?app">Open it full screen</a></div>
+  </div>
+</section>
+
+<!-- the paywall TODAY vs PROPOSED — built from CONTENT.compare (stills: assets/hero/<today>.png, <proposed>.png) -->
+<section class="au-sec" id="compare" hidden><div class="au-wrap" id="cmpBody"></div></section>
+
+<footer class="au-foot" id="sources">
+  <div class="au-wrap">
+    <details id="srcDetails">
+      <summary>Where the numbers come from</summary>
+      <div class="au-srcs" id="srcBody"></div>
+    </details>
+    <p class="au-fine" id="fine"></p>
+    <div class="au-cta-line">
+      <p>Every screen here can be built and A/B tested in Adapty’s Flow Builder, with no app release.</p>
+      <a class="au-btn" href="https://adapty.io/flow-paywall-builder/" target="_blank" rel="noopener">About Flow Builder</a>
+    </div>
+  </div>
+</footer>
+
+<!-- extras: video dialog (CONTENT.video), ?app bar, ?tour overlay (CONTENT.tour) -->
+<dialog class="au-vid" id="vid" aria-label="Walkthrough video">
+  <div class="au-vid-in"><video id="vidEl" controls muted playsinline preload="none"></video></div>
+  <div class="au-vid-bar"><a id="vidDl" download>Download the MP4</a><button type="button" class="au-vid-x" id="vidX">Close</button></div>
+</dialog>
+<div class="au-scrim" id="abScrim"></div>
+<div class="au-appbar" id="appbar">
+  <button type="button" class="au-ab-why" id="abWhy"><i></i><span id="abT"></span><em>Why ↑</em></button>
+  <div class="au-lsw" id="abLang" role="group" aria-label="Language"></div>
+</div>
+<div class="au-tour" aria-hidden="true">
+  <div class="au-tb"><img src="assets/brand/appstore-icon.jpg" alt="">Growth Audit <small>· Okudu</small></div>
+  <div class="au-tby">Prepared by Adapty</div>
+  <div class="au-tcap" id="tCap"></div>
+  <div class="au-ttap" id="tTap"></div>
+  <div class="au-tprog"><i id="tProg"></i></div>
+  <div class="au-tintro" id="tIntro"></div>
+  <div class="au-tend" id="tEnd"></div>
+</div>
+
+<!-- CONTENT — all the audit's words and numbers, as data. Schema (brand-check enforces it):
+     ideas  : 3–5 rows, ranked (the audit is five ideas, never fifteen). screen = the screen that shows it.
+     panel  : one entry per screen. idea = its number in ideas (1-based) or 0 for a context screen.
+              why on an idea screen reads "<b>Try</b> X, <b>because</b> Y." in ≤ 45 words; iv = its range.
+              why on a context screen is one line saying what it sets up.
+     hero   : three screen ids shown as stills in the hero — run hero-stills.sh after the screens are done.
+     outcome: combined "up to" numbers, PS-deck style, never above the ceiling of the per-idea ranges.
+     sources: public facts only — App Store, their site, their screens. No sales research on this page.
+     EXTRAS (each one hides itself when left empty):
+     langs  : [{"code":"en","name":"English"},{"code":"es","name":"Español · Spain prices"}] — first = the markup's language
+     i18n   : {"es": {"<data-t key>": "text with {tokens}"}} — every data-t key, for every language after the first
+     prices : {"es": {"yr": "39,99 €", …}} — {tokens} in i18n strings; that storefront's real IAP prices
+     labelsI18n: {"es": {"goal": {"a": "…"}}} — C.labels per language (data-bind="label:…")
+     liveUrl: final Pages URL (QR card + video end card); the QR file encodes liveUrl + "?app"
+     video / poster: "assets/walkthrough.mp4" / "assets/walkthrough-poster.jpg" (record-video.sh)
+     compare: {today, proposed, kicker, title, sub, todayCap, rows:[{h, idea, was, now}], kept} — today = a data-aside screen
+     tour   : {segments:[{id, d, st, tap:[selector-in-screen, ms], pop, reveal, end}], captions:{id:{n|k, t, l, o, ol}},
+              introLede, endTitle} — ~30 s total; the last segment has end:true (the end card) -->
+<script type="application/json" id="content">
+{
+ "app": "Okudu",
+ "state": {
+  "ad": "yt",
+  "purpose": "kids",
+  "path": "kids",
+  "topic": "t1",
+  "hero": "Emma",
+  "plan": "year"
+ },
+ "labels": {
+  "purpose": {
+   "authoring": "Authoring",
+   "reading": "Casual reading",
+   "kids": "Stories for kids",
+   "language": "Language learning",
+   "other": "Other"
+  }
+ },
+ "chips": {
+  "ad": "Your ad",
+  "welcome": "Welcome",
+  "topic": "Topic",
+  "hero": "Hero",
+  "review": "Review",
+  "writing": "Writing",
+  "chapter": "Chapter 1",
+  "credits": "Credits",
+  "paywall": "Premium",
+  "offer": "On close"
+ },
+ "hero": [
+  "chapter",
+  "paywall",
+  "credits"
+ ],
+ "outcome": {
+  "cr": "+20%",
+  "arpu": "+15%"
+ },
+ "ideas": [
+  {
+   "screen": "paywall",
+   "title": "Name their story on the plan screen",
+   "what": "“What brings you to Okudu?” only sorts the home feed today, and Premium reads the same to a parent and a fanfic writer. Put the answer and the hero in the headline (“Bedtime stories starring Emma, every night”) and the button, with the matching quote from your own site.",
+   "impact": "+10–20%",
+   "il": "CR to purchase"
+  },
+  {
+   "screen": "chapter",
+   "title": "Write chapter 1 before the sign-in",
+   "what": "After four creation steps, the button reads “Sign in to create”: the effort comes before anything to keep. Spend the free trial credits first, show the cover and the opening page, then ask them to sign in to keep it.",
+   "impact": "+5–10%",
+   "il": "CR to purchase"
+  },
+  {
+   "screen": "credits",
+   "title": "Price credits in chapters, next to what’s free",
+   "what": "Running out of credits opens a menu of ads, Discord, TikTok, packs and plans. Say what a credit buys (one chapter of about 1,000 words) and set Premium against the free path: up to 2 chapters a day with ads, or a month of chapters with none.",
+   "impact": "+10–20%",
+   "il": "CR to purchase"
+  },
+  {
+   "screen": "topic",
+   "title": "Skip the questions the first answer already covered",
+   "what": "A parent who tapped “Stories for kids” still starts the guide on 15 genres. Skip the genre, carry the age band, and open the topic with ideas for that reader: your own kids’ ideas for parents, “Sherlock meets someone new” for fanfic.",
+   "impact": "+5–15%",
+   "il": "CR to purchase"
+  },
+  {
+   "screen": "offer",
+   "title": "Catch the people who close Premium",
+   "what": "Closing Premium ends the sale. Answer ✕ with what they can buy without committing: your 10-credit pack, $6.49 and it never expires, framed as ten more chapters of their story, with the free ad credit underneath.",
+   "impact": "+10–15%",
+   "il": "ARPU"
+  }
+ ],
+ "panel": {
+  "ad": {
+   "idea": 0,
+   "t": "Where they came from",
+   "why": "Two of your live ads open the flow: YouTube’s bedtime ad and Meta’s “Your next fanfic starts here.” Switch them above the screens."
+  },
+  "welcome": {
+   "idea": 0,
+   "t": "Your welcome, word for word",
+   "why": "Kept as it is. The ad already answered it, so the matching chip is preselected and one line repeats the ad’s promise."
+  },
+  "topic": {
+   "idea": 4,
+   "t": "Skip the questions the first answer already covered",
+   "why": "<b>Try</b> skipping the genre the ad or first answer already gave and opening on topic ideas for that reader, <b>because</b> asking twice reads as not listening, and every step before the first chapter loses people.",
+   "iv": "CR +5–15%",
+   "il": "to purchase",
+   "also": "The ✕, dots and “Get ideas” are yours; the age band carries over from the welcome."
+  },
+  "hero": {
+   "idea": 0,
+   "t": "Who is the hero?",
+   "why": "Your question, word for word. The name typed here returns in chapter 1, on Premium and in its button."
+  },
+  "review": {
+   "idea": 0,
+   "t": "Review and start",
+   "why": "Your screen, trimmed. Today this button reads “Sign in to create”; here it shows the cost of chapter 1 and writes it."
+  },
+  "writing": {
+   "idea": 0,
+   "t": "A loader with a real payoff",
+   "why": "Names the topic and the hero, then hands over a real first page. Your own tip line stays."
+  },
+  "chapter": {
+   "idea": 2,
+   "t": "Write chapter 1 before the sign-in",
+   "why": "<b>Try</b> writing chapter 1 on the free trial credits before asking for a sign-in, <b>because</b> deferring registration until people have something to keep is a reliable win, and your first page is your best argument.",
+   "iv": "CR +5–10%",
+   "il": "to purchase",
+   "also": "The reader colours and the “What’s next?” choice are yours."
+  },
+  "credits": {
+   "idea": 3,
+   "t": "Price credits in chapters, next to what’s free",
+   "why": "<b>Try</b> saying a credit is one chapter and setting Premium against the free ad path, <b>because</b> “credits” mean nothing to a new reader, and free versus paid at the moment they run out is a top paywall lever.",
+   "iv": "CR +10–20%",
+   "il": "to purchase",
+   "also": "Every line on the three cards is your own app’s copy, plus the chapter count."
+  },
+  "paywall": {
+   "idea": 1,
+   "t": "Name their story on the plan screen",
+   "why": "<b>Try</b> putting their first answer and their hero in the headline and the button, with a matching quote from your site, <b>because</b> a plan screen that repeats what someone told you converts better than a generic one.",
+   "iv": "CR +10–20%",
+   "il": "to purchase",
+   "also": "Also here: the annual plan as $10.00 a month, 17% less than monthly, and your 4.6 ★ from 445 ratings."
+  },
+  "offer": {
+   "idea": 5,
+   "t": "Catch the people who close Premium",
+   "why": "<b>Try</b> answering ✕ with the 10-credit pack, framed as ten more chapters of their story, <b>because</b> a smaller second offer right after the main paywall converts some of the people who said no to a plan.",
+   "iv": "ARPU +10–15%",
+   "il": "from people who close Premium",
+   "also": ""
+  }
+ },
+ "langs": [
+  {
+   "code": "en",
+   "name": "English"
+  },
+  {
+   "code": "de",
+   "name": "Deutsch · German prices"
+  }
+ ],
+ "i18n": {
+  "de": {
+   "echoMeta": "✨ Deine nächste Fanfic beginnt hier",
+   "echoYt": "✨ Die Gutenachtgeschichte von heute beginnt hier",
+   "wTitle": "Willkommen, Bücherwurm!<br>Was führt dich zu Okudu?",
+   "pA": "Schreiben",
+   "pR": "Freizeitlesen",
+   "pK": "Geschichten für Kinder",
+   "pL": "Sprachenlernen",
+   "pO": "Sonstiges",
+   "ages": "Geschichten für diese Altersgruppe:",
+   "start": "Jetzt entdecken",
+   "prefs": "Du kannst deine Präferenzen jederzeit in den Einstellungen ändern",
+   "tTitle": "Wie wäre es mit einem Thema?",
+   "tSub": "Lass deiner Kreativität freien Lauf!",
+   "ideas": "Ideen erhalten",
+   "insp": "Lass dich inspirieren oder tippe zum Auswählen",
+   "cont": "Weiter",
+   "hTitle": "Wer ist der Held?",
+   "hSub": "Das kannst du selbst oder jeder Charakter sein, den du dir vorstellst",
+   "name": "Name",
+   "newChar": "Neuen Charakter erstellen",
+   "review": "Prüfen",
+   "rTitle": "Prüfen und starten",
+   "lGenre": "Genre",
+   "lSetting": "Schauplatz",
+   "phSetting": "z. B. Fandom, England im 19. Jahrhundert, ein ferner Planet...",
+   "lTopic": "Thema",
+   "lChars": "Charaktere",
+   "cost": "Kapitel 1 · etwa 1.000 Wörter ·",
+   "create": "Erstellen",
+   "wrTitle": "Kapitel 1 wird geschrieben&nbsp;…",
+   "tip": "Tipp: Bestimme am Ende jedes Kapitels selbst, wie es weitergeht",
+   "next": "Wie geht es weiter?",
+   "keepS": "Melde dich an, um sie zu speichern und zu bestimmen, wie es weitergeht.",
+   "apple": " Mit Apple fortfahren",
+   "google": "Mit Google fortfahren",
+   "trial": "Neue Nutzer erhalten kostenlose Test-Credits!",
+   "gc": "Credits erhalten",
+   "crS": "1 Credit schreibt 1 Kapitel mit etwa 1.000 Wörtern. So bekommst du die nächsten.",
+   "free": "Kostenlose Credits",
+   "ad1": "Sieh dir eine Werbung an und erhalte 1 Credit. Zweimal täglich.",
+   "freeN": "Bis zu 2 Kapitel am Tag, mit Werbung",
+   "watch": "Werbung ansehen",
+   "bestV": "BESTER WERT",
+   "prem": "Bestes Preis-Leistungs-Verhältnis pro Credit, keine Werbung und Premium-Funktionen.",
+   "premN": "Credits jeden Monat: jeder ein Kapitel. Ungenutzte werden übertragen.",
+   "plans": "Tarife ansehen",
+   "packs": "Credit-Pakete, die nie verfallen",
+   "packN": "10 Credits für {pk}: 10 Kapitel, {pc} pro Credit",
+   "vpacks": "Pakete ansehen",
+   "pwS": "Hol dir Premium, um mehr Geschichten zu erstellen, Werbung zu entfernen und mehr.",
+   "b1": "✅ Credits jeden Monat für deine eigenen Geschichten",
+   "b2": "✅ Auswahl von KI-Autor und Künstler",
+   "b3": "✅ Unbegrenztes Bearbeiten",
+   "b4": "✅ Werbefreies, ununterbrochenes Erlebnis",
+   "b5": "✅ Premium-Stimmen, die Geschichten zum Leben erwecken",
+   "rating": "4,3 · 15 Bewertungen im App Store",
+   "save": "17 % SPAREN",
+   "annual": "Bookworm Jahresabo",
+   "perMo": "Jährlich abgerechnet",
+   "yr": "–",
+   "monthly": "Bookworm",
+   "mBill": "Monatlich abgerechnet",
+   "mo": "{mo}/Monat",
+   "carry": "Ungenutzte Credits werden übertragen, bis zum Doppelten deiner monatlichen Credit-Anzahl. Jederzeit kündbar.",
+   "terms": "AGB",
+   "privacy": "Datenschutz",
+   "restore": "Wiederherstellen",
+   "oT": "Noch kein Abo?",
+   "oP": "Credit-Paket, das nie verfällt",
+   "oPc": "{pc} pro Credit · kein Abo",
+   "pk": "{pk}",
+   "oC": "10 Credits für {pk}",
+   "oAd": "Oder sieh dir eine Werbung an und erhalte 1 Credit. Zweimal täglich."
+  }
+ },
+ "prices": {
+  "de": {
+   "mo": "10,90 €",
+   "pk": "5,79 €",
+   "pc": "0,58 €"
+  }
+ },
+ "labelsI18n": {
+  "de": {
+   "purpose": {
+    "authoring": "Schreiben",
+    "reading": "Freizeitlesen",
+    "kids": "Geschichten für Kinder",
+    "language": "Sprachenlernen",
+    "other": "Sonstiges"
+   }
+  }
+ },
+ "liveUrl": "https://eddieatadapty.github.io/okudu-flow-rebuild/",
+ "video": "assets/walkthrough.mp4",
+ "poster": "assets/walkthrough-poster.jpg",
+ "compare": null,
+ "tour": {
+  "introLede": "Five ideas to turn more Okudu readers into subscribers, built into your own flow, starting from your YouTube bedtime ad.",
+  "endTitle": "Five ideas, built into your own flow.",
+  "segments": [
+   {
+    "id": "ad",
+    "d": 3200,
+    "st": {
+     "ad": "yt"
+    },
+    "tap": [
+     ".o-ytbtn",
+     2650
+    ]
+   },
+   {
+    "id": "welcome",
+    "d": 2500,
+    "tap": [
+     ".cta",
+     2000
+    ]
+   },
+   {
+    "id": "topic",
+    "d": 2600,
+    "tap": [
+     ".cta",
+     2100
+    ]
+   },
+   {
+    "id": "hero",
+    "d": 2100,
+    "tap": [
+     ".cta",
+     1650
+    ]
+   },
+   {
+    "id": "review",
+    "d": 2300,
+    "tap": [
+     ".cta",
+     1800
+    ]
+   },
+   {
+    "id": "writing",
+    "d": 1700
+   },
+   {
+    "id": "chapter",
+    "d": 3100,
+    "tap": [
+     ".o-apple",
+     2600
+    ]
+   },
+   {
+    "id": "credits",
+    "d": 3100,
+    "tap": [
+     ".o-sm.red",
+     2600
+    ]
+   },
+   {
+    "id": "paywall",
+    "d": 3300,
+    "pop": ".o-top h1",
+    "tap": [
+     ".x",
+     2850
+    ]
+   },
+   {
+    "id": "offer",
+    "d": 2900,
+    "reveal": ".o-pack"
+   },
+   {
+    "id": "offer",
+    "d": 3000,
+    "end": true
+   }
+  ],
+  "captions": {
+   "ad": {
+    "k": "Your ad",
+    "t": "It starts where they came from",
+    "l": "Your YouTube bedtime ad, then your own welcome."
+   },
+   "welcome": {
+    "k": "Context",
+    "t": "The ad already answered this",
+    "l": "“Stories for kids” is preselected."
+   },
+   "topic": {
+    "n": 4,
+    "t": "Skip what’s already answered",
+    "l": "No genre question. Topic ideas for parents.",
+    "o": "+5–15%",
+    "ol": "CR to purchase"
+   },
+   "hero": {
+    "k": "Context",
+    "t": "Who is the hero?",
+    "l": "Their child’s name goes into the story."
+   },
+   "review": {
+    "k": "Context",
+    "t": "Create, not “Sign in to create”",
+    "l": "Chapter 1 costs one trial credit."
+   },
+   "writing": {
+    "k": "Context",
+    "t": "Writing chapter 1",
+    "l": "A loader with a real first page behind it."
+   },
+   "chapter": {
+    "n": 2,
+    "t": "Chapter 1 before the sign-in",
+    "l": "They sign in to keep a story they’ve started.",
+    "o": "+5–10%",
+    "ol": "CR to purchase"
+   },
+   "credits": {
+    "n": 3,
+    "t": "Credits, priced in chapters",
+    "l": "Free with ads, or a month of chapters.",
+    "o": "+10–20%",
+    "ol": "CR to purchase"
+   },
+   "paywall": {
+    "n": 1,
+    "t": "Their story on Premium",
+    "l": "Emma in the headline and the button.",
+    "o": "+10–20%",
+    "ol": "CR to purchase"
+   },
+   "offer": {
+    "n": 5,
+    "t": "A smaller yes on close",
+    "l": "10 credits, $6.49, never expires.",
+    "o": "+10–15%",
+    "ol": "ARPU"
+   }
+  }
+ },
+ "grounding": "Impact ranges are Adapty’s expected effect from teardowns and A/B tests across 30,000+ subscription apps, not measured lift for Okudu. They overlap, so they don’t add up.",
+ "sources": [
+  {
+   "group": "Prices",
+   "items": [
+    {
+     "dt": "$11.99 a month",
+     "dd": "“Bookworm”, In-App Purchases on your <a href=\"https://apps.apple.com/us/app/okudu-ai-create-stories/id6502702338\">US App Store listing</a>. Apple doesn’t print the period; we read it as monthly because “Bookworm Annual” is listed beside it and your app only labels plans /month and /year."
+    },
+    {
+     "dt": "$119.99 a year",
+     "dd": "“Bookworm Annual”, same list. $10.00 a month and “Save 17%” are ours: $119.99 ÷ 12, and 1 − $119.99 ÷ (12 × $11.99)."
+    },
+    {
+     "dt": "$6.49 for 10 credits",
+     "dd": "“10 Credits”, same list; $0.65 per credit is ours."
+    },
+    {
+     "dt": "10,90 € · 5,79 €",
+     "dd": "“Bookworm” and “10 Credits” on the <a href=\"https://apps.apple.com/de/app/okudu-ai-geschichten/id6502702338\">German listing</a>; 0,58 € per credit is ours. Apple shows ten SKUs per storefront and the German ten don’t include an annual Bookworm, so the German Premium screen shows the monthly plan only."
+    },
+    {
+     "dt": "Not used",
+     "dd": "Creator ($29.99, period not shown), Author (80,90 € and 809,00 € in Germany, not in the US list), credit packs of 2, 50, 100, 200, 500 and 1,000."
+    }
+   ]
+  },
+  {
+   "group": "Proof",
+   "items": [
+    {
+     "dt": "4.6 ★ · 445 ratings",
+     "dd": "US App Store listing (4.59), November 2026. German listing: 4.3 from 15 ratings."
+    },
+    {
+     "dt": "Quotes",
+     "dd": "Sarah (parent) and Lily (creator), word for word from <a href=\"https://okudu.ai\">okudu.ai</a>; the German build uses the same two quotes word for word from <a href=\"https://okudu.ai/de/\">okudu.ai/de</a>."
+    }
+   ]
+  },
+  {
+   "group": "Features and copy",
+   "items": [
+    {
+     "dt": "Welcome, topic, hero, review",
+     "dd": "Walked on <a href=\"https://app.okudu.ai\">app.okudu.ai</a> on 9 November 2026, in light and dark themes; copy kept word for word. German copy is your app’s own German where it exists, ours elsewhere."
+    },
+    {
+     "dt": "Credits and Premium copy",
+     "dd": "Your app’s own strings (app.okudu.ai): “Get Premium to create more stories…”, the ✅ benefits, “Unused credits carry over…”, “Watch an ad to get 1 credit. Twice a day.”, “Credit packs that never expire”, “First time users get free trial credits!”. The layouts of these two screens are ours."
+    },
+    {
+     "dt": "1 credit, about 1,000 words",
+     "dd": "Your <a href=\"https://okudu.ai/faq/\">FAQ</a> (standard chapters are about 1,000 words) and your fanfic ad, where Create shows 1 ✦."
+    },
+    {
+     "dt": "Ours, written to show the screens",
+     "dd": "Chapter 1 text and titles, the two fanfic topic ideas after “Sherlock meets someone new”, the welcome’s ad line, the credits headline and the Premium headlines."
+    },
+    {
+     "dt": "Ads",
+     "dd": "<a href=\"https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=ALL&q=%22Okudu%20AI%22&search_type=keyword_exact_phrase\">Meta Ad Library</a>, page OKUDU: “Your next fanfic starts here.” · “Create any story you imagine!” · Install now → your App Store page. YouTube: the bedtime ad on your “Okudu ai” channel. Apple Ads shares are account-level, US, 9 October to 9 November 2026."
+    }
+   ]
+  },
+  {
+   "group": "Design",
+   "items": [
+    {
+     "dt": "Colours",
+     "dd": "Sampled off app.okudu.ai (red #cd3b3e, purple #6a55dd, chips #f5f2ec, ink #1a2836) and your App Store screenshots (reader #fefbce, the purple-to-red listing gradient)."
+    },
+    {
+     "dt": "Type",
+     "dd": "Literata for headings and Open Sans for UI, the families your site and app load."
+    },
+    {
+     "dt": "Art",
+     "dd": "The bookworm from app.okudu.ai; story covers cropped from your first App Store screenshot; ad frames from the two ads above."
+    }
+   ]
+  },
+  {
+   "group": "What we couldn’t see",
+   "items": [
+    {
+     "dt": "Your iOS build",
+     "dd": "We can’t install App Store apps, so we walked the web app, which shares its screens and copy. If iOS differs, an iPhone recording from a fresh install to Premium would let us check."
+    },
+    {
+     "dt": "Premium as it looks today",
+     "dd": "Behind a sign-in we didn’t make, so there is no side-by-side here: the copy is yours, the layout ours."
+    },
+    {
+     "dt": "Numbers we left off",
+     "dd": "Credits per plan, how many free trial credits a new user gets, the Creator plan’s period, and the annual price in Germany."
+    }
+   ]
+  }
+ ]
+}
+</script>
+
+<script>
+/* per-app hooks go here: window.onSync = function(S){…}; window.onEnter = function(id, S){…}; window.onLang = function(lang){…};
+   Globals available: S (S.lang = current language), C, cur, ORDER, scr, go(), back(), jump(), sync(), setLang(), fillP(str, lang),
+   SHOT (screenshot/tour run), HERO (hero-still run). Per-language dynamic text: read S.lang in onSync. */
+/* Okudu: the ad picks the path (Meta fanfic ad → Casual reading, YouTube bedtime ad → Stories for kids);
+   every later screen reads S.purpose, S.topic and S.hero. All dynamic copy lives here, per language. */
+var OK_T = {
+  en: {
+    genre: {kids: 'Fantasy · ages 9-12 · from your first answer', story: 'Fanfiction · from your ad'},
+    topics: {
+      kids: {t1: 'A magician’s quest to find a lost spell that can bring paintings to life', t2: 'A boy and girl open a portal to a medieval kingdom threatened by dragons', t3: 'An alien visiting Earth for the first time, learning about human culture'},
+      story: {t1: 'Sherlock meets someone new', t2: 'Two rivals from your fandom, stuck on one mission', t3: 'Your favourite ship, ten years later'}
+    },
+    rGenre: {kids: 'Fantasy', story: 'Fanfiction'},
+    wl1: 'Setting the scene: ', wl2: 'Casting ', wl2b: ' as the hero',
+    chT: {kids: 'The Painted Spell', story: 'A Stranger at Baker Street'},
+    chM: 'Chapter 1 · Short story · by you',
+    chP: {
+      kids: '{h} had always liked the old paintings in the hallway. But tonight, the knight in the gold frame blinked. “The spell is lost,” he whispered, “and only someone brave can find it.” {h} took a deep breath and reached for the frame…',
+      story: 'Fog rolled down Baker Street as {h} studied the stranger on the doorstep. Nobody knocked at 221B after midnight, not unless they had something to hide. “You’re late,” {h} said, though they had never met…'
+    },
+    chO: {kids: 'Step into the painting with the knight.', story: 'Let the stranger in, and lock the door behind them.'},
+    keep: 'Keep {h}’s story',
+    crT: '{h}’s chapter 2 is waiting',
+    pwT: {kids: 'Bedtime stories starring {h}, every night', reading: 'Your fanfic, one chapter after another', authoring: 'Your stories, written chapter by chapter', language: 'Stories at your level, one chapter after another', other: 'Your stories, one chapter after another'},
+    pwQ: {kids: '“Perfect for bedtime! My kids really enjoy creating a new story every night.” Sarah, parent', story: '“Okudu is amazing for exploring different AUs for my fandom!” Lily, creator'},
+    pwC: {kids: 'Continue {h}’s story', story: 'Continue my story'},
+    ofS: 'Keep {h}’s story going without a subscription.'
+  },
+  de: {
+    genre: {kids: 'Fantasy · 9–12 Jahre · aus deiner ersten Antwort', story: 'Fanfiction · aus deiner Anzeige'},
+    topics: {
+      kids: {t1: 'Ein Zauberer sucht einen verlorenen Spruch, der Bilder lebendig macht', t2: 'Ein Junge und ein Mädchen öffnen ein Portal in ein Königreich voller Drachen', t3: 'Ein Alien besucht zum ersten Mal die Erde und lernt die Menschen kennen'},
+      story: {t1: 'Sherlock trifft jemand Neues', t2: 'Zwei Rivalen aus deinem Fandom auf einer Mission', t3: 'Dein Lieblings-Ship, zehn Jahre später'}
+    },
+    rGenre: {kids: 'Fantasy', story: 'Fanfiction'},
+    wl1: 'Die Szene entsteht: ', wl2: '', wl2b: ' wird die Hauptfigur',
+    chT: {kids: 'Der gemalte Zauber', story: 'Ein Fremder in der Baker Street'},
+    chM: 'Kapitel 1 · Kurzgeschichte · von dir',
+    chP: {
+      kids: '{h} mochte die alten Bilder im Flur schon immer. Doch heute Nacht blinzelte der Ritter im goldenen Rahmen. „Der Zauber ist verloren“, flüsterte er, „und nur jemand Mutiges kann ihn finden.“ {h} atmete tief ein und griff nach dem Rahmen …',
+      story: 'Nebel zog durch die Baker Street, als {h} den Fremden an der Tür musterte. Nach Mitternacht klopfte niemand an 221B, außer er hatte etwas zu verbergen. „Du bist spät“, sagte {h}, obwohl sie sich nie begegnet waren …'
+    },
+    chO: {kids: 'Mit dem Ritter ins Bild steigen.', story: 'Den Fremden hereinlassen und die Tür abschließen.'},
+    keep: '{h}s Geschichte behalten',
+    crT: '{h}s Kapitel 2 wartet',
+    pwT: {kids: 'Gute&shy;nacht&shy;geschichten mit {h}, jeden Abend', reading: 'Deine Fanfic, Kapitel für Kapitel', authoring: 'Deine Geschichten, Kapitel für Kapitel', language: 'Geschichten auf deinem Niveau, Kapitel für Kapitel', other: 'Deine Geschichten, Kapitel für Kapitel'},
+    pwQ: {kids: '„Perfekt für die Gute-Nacht-Routine! Meine Kinder lieben es, jeden Abend eine neue Geschichte zu erschaffen.“ Sarah, Mama', story: '„Okudu ist großartig, um verschiedene AUs für mein Fandom zu erkunden!“ Lily, Creator'},
+    pwC: {kids: '{h}s Geschichte fortsetzen', story: 'Meine Geschichte fortsetzen'},
+    ofS: 'Lies {h}s Geschichte weiter, ganz ohne Abo.'
+  }
+};
+var OK_LAST_AD = null;
+function okSet(id, html){ var e = document.getElementById(id); if (e && e.innerHTML !== html) e.innerHTML = html; }
+window.onSync = function(S){
+  /* the ad sets the first answer and the hero (only when the ad changes) */
+  if (S.ad !== OK_LAST_AD) {
+    OK_LAST_AD = S.ad;
+    S.purpose = S.ad === 'yt' ? 'kids' : 'reading';
+    S.hero = S.ad === 'yt' ? 'Emma' : 'Sherlock';
+    S.topic = 't1';
+    var inp = document.querySelector('[data-input="hero"]'); if (inp) inp.value = S.hero;
+  }
+  S.path = S.purpose === 'kids' ? 'kids' : 'story';
+  var L = OK_T[S.lang] || OK_T.en, p = S.path, h = (S.hero && S.hero !== 'there' ? S.hero : '').trim() || (p === 'kids' ? 'Emma' : 'Sherlock');
+  var f = function(s){ return String(s).split('{h}').join(h); };
+  document.querySelectorAll('[data-show="path:kids"]').forEach(function(e){ e.style.display = p === 'kids' ? '' : 'none'; });
+  document.querySelectorAll('[data-show="path:story"]').forEach(function(e){ e.style.display = p === 'story' ? '' : 'none'; });
+  okSet('genreTag', L.genre[p]);
+  var T = L.topics[p];
+  okSet('ti1', T.t1); okSet('ti2', T.t2); okSet('ti3', T.t3);
+  okSet('topicField', T[S.topic] || T.t1); okSet('rTopic', T[S.topic] || T.t1);
+  okSet('rGenre', L.rGenre[p]);
+  okSet('heroAv', h.charAt(0).toUpperCase());
+  okSet('wl1', L.wl1 + '<b>' + (T[S.topic] || T.t1) + '</b>');
+  okSet('wl2', L.wl2 + '<b>' + h + '</b>' + L.wl2b);
+  okSet('chT', L.chT[p]); okSet('chM', L.chM); okSet('chP', f(L.chP[p])); okSet('chO1', L.chO[p]);
+  okSet('keepT', f(L.keep)); okSet('crT', f(L.crT));
+  okSet('pwT', f(L.pwT[S.purpose] || L.pwT.other)); okSet('pwQ', L.pwQ[p]); okSet('pwC', f(L.pwC[p])); okSet('ofS', f(L.ofS));
+  /* Germany: Apple's public IAP list for the German storefront has no annual Bookworm price, so the annual card is hidden there */
+  var yr = document.getElementById('planYear');
+  if (yr) yr.style.display = S.lang === 'de' ? 'none' : '';
+  if (S.lang === 'de' && S.plan === 'year') { S.plan = 'month'; document.querySelectorAll('[data-pick^="plan:"]').forEach(function(el){ el.classList.toggle('on', el.dataset.pick === 'plan:month'); }); }
+  if (S.lang !== 'de' && !S.plan) S.plan = 'year';
+};
+window.onLang = function(l){ if (l !== 'de' && S.plan === 'month' && !S._userPlan) { S.plan = 'year'; sync(); } };
+window.onEnter = function(id, S){
+  if (id === 'writing' && !SHOT && !HERO) setTimeout(function(){ if (cur === 'writing') go('chapter'); }, 1700);
+};
+function okSeeAd(a){ S.ad = a; sync(); jumpTo('ad'); }
+</script>
+<script>
+/* ============ engine — generic, do not fork per app ============ */
+var C = JSON.parse(document.getElementById('content').textContent);
+var S = C.state, scr = {}, ORDER = [], hist = [], cur = null, Q = location.search;
+var SHOT = /[?&](shot|phone|tour)\b/.test(Q), HERO = /[?&]hero\b/.test(Q);
+/* a screen with data-aside (e.g. the paywall TODAY for the side-by-side) renders for stills but is not part of the flow */
+document.querySelectorAll('.scr').forEach(function(s){ scr[s.dataset.id] = s; if (!s.hasAttribute('data-aside')) ORDER.push(s.dataset.id); });
+if (/[?&]shot\b/.test(Q)) document.documentElement.classList.add('shot');
+if (/[?&]phone\b/.test(Q)) document.documentElement.classList.add('shot', 'phoneonly');
+if (/[?&]clear\b/.test(Q)) document.documentElement.classList.add('clear');
+var IDEAS = (C.ideas || []).length;
+
+/* ---- languages: markup is the first language; C.i18n[lang][data-t key] the others; {tokens} from C.prices[lang] ---- */
+var LANGS = C.langs || [], BASE = LANGS.length ? LANGS[0].code : 'en', LANG_DONE = BASE, BASE_LABELS = JSON.parse(JSON.stringify(C.labels || {}));
+if (!S.lang) S.lang = BASE;
+function fillP(s, l){ var P = (C.prices || {})[l] || {}; return String(s).replace(/\{(\w+)\}/g, function(m, k){ return k in P ? P[k] : m; }); }
+function applyLang(){
+  var l = S.lang || BASE; if (l === LANG_DONE) return;
+  var T = (C.i18n || {})[l] || {};
+  document.querySelectorAll('.phone [data-t]').forEach(function(el){
+    if (el._base == null) el._base = el.innerHTML;
+    el.innerHTML = l === BASE || T[el.dataset.t] == null ? el._base : fillP(T[el.dataset.t], l);
+  });
+  C.labels = JSON.parse(JSON.stringify(BASE_LABELS));
+  var LL = (C.labelsI18n || {})[l] || {}; Object.keys(LL).forEach(function(k){ C.labels[k] = LL[k]; });
+  LANG_DONE = l;
+}
+function setLang(l){
+  if (!LANGS.some(function(x){ return x.code === l; })) return;
+  S.lang = l; sync();
+  document.querySelectorAll('[data-setlang]').forEach(function(b){ b.classList.toggle('on', b.dataset.setlang === l); });
+  if (window.onLang) window.onLang(l);
+}
+
+function lab(key){ var v = S[key]; var L = C.labels[key]; if (Array.isArray(v)) return v.map(function(x){ return L && L[x] || x; }).join(', '); return (L && L[v]) || v; }
+function sync(){
+  applyLang();
+  document.querySelectorAll('[data-bind]').forEach(function(el){
+    var b = el.dataset.bind, m = b.split(':');
+    el.textContent = m[0] === 'label' ? lab(m[1]) : m[0] === 'count' ? (S[m[1]] || []).length : (S[b] == null ? '' : S[b]);
+  });
+  document.querySelectorAll('[data-pick]').forEach(function(el){ var p = el.dataset.pick.split(':'); el.classList.toggle('on', S[p[0]] === p[1]); });
+  document.querySelectorAll('[data-toggle]').forEach(function(el){ var p = el.dataset.toggle.split(':'); el.classList.toggle('on', (S[p[0]] || []).indexOf(p[1]) > -1); });
+  document.querySelectorAll('[data-requires]').forEach(function(el){ el.disabled = !(S[el.dataset.requires] || []).length; });
+  document.querySelectorAll('[data-show]').forEach(function(el){ var p = el.dataset.show.split(':'); el.style.display = String(S[p[0]]) === p[1] ? '' : 'none'; });
+  if (window.onSync) window.onSync(S);
+}
+function show(id, dir){
+  var from = scr[cur], to = scr[id]; if (!to || id === cur) return;
+  var sheet = to.classList.contains('sheet');
+  if (from){
+    from.classList.remove('is-active');
+    if (sheet) from.classList.add('under');                                   /* a sheet slides up over the screen that opened it */
+    else if (dir === 'fwd' && !from.classList.contains('sheet')) from.classList.add('is-past');
+  }
+  if (!sheet) Object.keys(scr).forEach(function(k){ var u = scr[k]; if (u !== to && u.classList.contains('under')) { u.classList.remove('under'); if (dir === 'fwd') u.classList.add('is-past'); } });
+  to.classList.remove('is-past', 'under'); to.classList.add('is-active'); cur = id;
+  paint(); if (window.onEnter) window.onEnter(id, S);
+}
+function go(id){ if (cur) hist.push(cur); show(id, 'fwd'); }
+function back(){ if (hist.length) { var p = hist.pop(); scr[cur].classList.remove('is-active'); show(p, 'back'); } }
+function jump(id){
+  Object.keys(scr).forEach(function(k){ scr[k].classList.add('nofx'); scr[k].classList.remove('is-active', 'is-past', 'under'); });
+  var i = ORDER.indexOf(id); hist = ORDER.slice(0, i < 0 ? 0 : i); cur = null;
+  ORDER.slice(0, i).forEach(function(k){ if (!scr[k].classList.contains('sheet')) scr[k].classList.add('is-past'); });
+  if (scr[id] && scr[id].classList.contains('sheet')) {                        /* jumping to a sheet: its opener stays visible under it */
+    for (var j = i - 1; j >= 0; j--) if (!scr[ORDER[j]].classList.contains('sheet')) { scr[ORDER[j]].classList.remove('is-past'); scr[ORDER[j]].classList.add('under'); break; }
+  }
+  show(id, 'jump');
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ Object.keys(scr).forEach(function(k){ scr[k].classList.remove('nofx'); }); }); });
+}
+function stepBy(d){ var i = ORDER.indexOf(cur) + d; if (i >= 0 && i < ORDER.length) jump(ORDER[i]); }
+function jumpTo(id){
+  var p = document.getElementById('prototype');
+  if (p && !document.documentElement.classList.contains('appmode')) p.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start'});
+  jump(id);
+}
+function paint(){
+  sync();
+  var c = document.getElementById('chips');
+  if (!c.childElementCount) ORDER.forEach(function(id){
+    var p = C.panel[id] || {}, b = document.createElement('button');
+    b.className = 'au-chip'; b.type = 'button'; b.dataset.id = id; b.setAttribute('role', 'tab');
+    b.innerHTML = (p.idea ? '<i>' + p.idea + '</i>' : '') + ((C.chips && C.chips[id]) || id);
+    b.onclick = function(){ jump(id); };
+    c.appendChild(b);
+  });
+  c.querySelectorAll('.au-chip').forEach(function(b){ var on = b.dataset.id === cur; b.classList.toggle('on', on); b.setAttribute('aria-selected', on); });
+  var d = C.panel[cur] || {t: cur, why: ''}, n = ORDER.indexOf(cur) + 1;
+  document.getElementById('panel').innerHTML =
+    (d.idea ? '<div class="au-pn-k"><i></i>Idea ' + d.idea + ' of ' + IDEAS + '</div>' : '<div class="au-pn-k au-ctx"><i></i>Context</div>') +
+    '<h3 class="au-pn-t">' + d.t + '</h3><p class="au-pn-h">' + d.why + '</p>' +
+    (d.iv ? '<div class="au-pn-o"><div class="au-lab">Potential outcome · based on Adapty data</div><div class="au-val"><mark>' + d.iv + '</mark></div><div class="au-sub">' + (d.il || '') + '</div></div>' : '') +
+    (d.also ? '<p class="au-pn-a">' + d.also + '</p>' : '') +
+    '<div class="au-pn-nav"><button type="button" onclick="stepBy(-1)"' + (n <= 1 ? ' disabled' : '') + '>‹ Previous</button><span>Screen ' + n + ' of ' + ORDER.length + '</span><button type="button" onclick="stepBy(1)"' + (n === ORDER.length ? ' disabled' : '') + '>Next ›</button></div>';
+  var ab = document.getElementById('abT'); if (ab) ab.textContent = (d.idea ? 'Idea ' + d.idea + ' of ' + IDEAS + ' · ' : '') + (d.t || '');
+}
+document.addEventListener('click', function(e){
+  var j = e.target.closest('[data-jumpto]'); if (j){ e.preventDefault(); jumpTo(j.dataset.jumpto); return; }
+  var L = e.target.closest('[data-setlang]'); if (L){ setLang(L.dataset.setlang); return; }
+  if (e.target.closest('[data-langtoggle]') && LANGS.length > 1){ var k = LANGS.findIndex(function(x){ return x.code === S.lang; }); setLang(LANGS[(k + 1) % LANGS.length].code); return; }
+  var el = e.target.closest('[data-go],[data-back],[data-pick],[data-toggle]'); if (!el) return;
+  if (el.dataset.pick){ var p = el.dataset.pick.split(':'); S[p[0]] = p[1]; sync(); if (el.dataset.advance) setTimeout(function(){ go(el.dataset.advance); }, 170); return; }
+  if (el.dataset.toggle){ var q = el.dataset.toggle.split(':'), a = S[q[0]] = S[q[0]] || [], i = a.indexOf(q[1]); if (i > -1) a.splice(i, 1); else a.push(q[1]); sync(); return; }
+  if ('back' in el.dataset) return back();
+  go(el.dataset.go);
+});
+document.querySelectorAll('[data-input]').forEach(function(inp){
+  inp.value = S[inp.dataset.input] || ''; inp.addEventListener('input', function(){ S[inp.dataset.input] = inp.value.trim() || 'there'; sync(); });
+});
+function $(id){ return document.getElementById(id); }
+
+/* hero stills, shortlist, outcome, sources — from CONTENT */
+$('heroPhones').innerHTML = (C.hero || []).map(function(id, i){
+  var pos = ['l', 'c', 'r'][i] || 'r', t = (C.chips && C.chips[id]) || id;
+  return '<button class="au-hp au-' + pos + '" data-jumpto="' + id + '" aria-label="Open ' + t + '"><img src="assets/hero/' + id + '.png" alt=""></button>';
+}).join('');
+$('ideaList').innerHTML = (C.ideas || []).map(function(r, i){
+  return '<article class="au-idea"><div class="au-num">0' + (i + 1) + '</div><div><h3>' + r.title + '</h3><p>' + r.what + '</p>' +
+    '<button type="button" class="au-lnk" data-jumpto="' + r.screen + '">See it on the screen</button></div>' +
+    '<div class="au-imp"><div class="au-v"><mark>' + r.impact + '</mark></div><div class="au-l">' + r.il + '</div></div></article>';
+}).join('');
+var O = C.outcome || {};
+$('bandNums').innerHTML =
+  (O.cr ? '<div><small>up to</small><b>' + O.cr + '</b><span>CR to purchase</span></div>' : '') +
+  (O.arpu ? '<div><small>up to</small><b>' + O.arpu + '</b><span>ARPU</span></div>' : '');
+$('bandFn').textContent = C.grounding;
+$('fine').textContent = C.grounding + ' Prepared by Adapty.';
+$('srcBody').innerHTML = C.sources.map(function(g){
+  return '<div><h4>' + g.group + '</h4><dl>' + g.items.map(function(it){ return '<dt>' + it.dt + '</dt><dd>' + it.dd + '</dd>'; }).join('') + '</dl></div>';
+}).join('');
+function openSrc(){ var d = $('srcDetails'); d.open = true; d.scrollIntoView({block: 'start'}); }
+
+/* ---- extras: language control, the paywall side by side, QR / phone view, the video ---- */
+if (LANGS.length > 1) {
+  $('langRow').hidden = false;
+  var lb = LANGS.map(function(x){ return '<button type="button" data-setlang="' + x.code + '">' + x.name + '</button>'; }).join('');
+  $('langSw').innerHTML = lb;
+  $('abLang').innerHTML = LANGS.map(function(x){ return '<button type="button" data-setlang="' + x.code + '">' + x.code.toUpperCase() + '</button>'; }).join('');
+}
+var CM = C.compare;
+if (CM && scr[CM.today] && scr[CM.proposed]) {
+  $('compare').hidden = false; $('navCompare').hidden = false;
+  $('cmpBody').innerHTML = '<div class="au-ideas-h"><p class="au-kicker">' + (CM.kicker || 'The paywall, side by side') + '</p><h2 class="au-h2">' + (CM.title || 'Today and proposed.') + (CM.sub ? ' <span>' + CM.sub + '</span>' : '') + '</h2></div>' +
+    '<div class="au-cmp"><figure><img src="assets/hero/' + CM.today + '.png" alt="Your paywall today"><figcaption>Today <span>· ' + (CM.todayCap || 'rebuilt from your recording') + '</span></figcaption></figure>' +
+    '<ol class="au-chg">' + (CM.rows || []).map(function(r){
+      return '<li><h4>' + r.h + (r.idea ? ' <i>Idea ' + r.idea + '</i>' : '') + '</h4><span class="au-was"><em>Today</em>' + r.was + '</span><span class="au-now"><em>Proposed</em>' + r.now + '</span></li>';
+    }).join('') + '</ol>' +
+    '<figure><button type="button" class="au-cmp-go" data-jumpto="' + CM.proposed + '" aria-label="Open the proposed paywall"><img src="assets/hero/' + CM.proposed + '.png" alt="The proposed paywall"></button><figcaption>Proposed <span>· tap to try it</span></figcaption></figure></div>' +
+    (CM.kept ? '<p class="au-kept">' + CM.kept + '</p>' : '');
+}
+if (C.liveUrl) { $('qrCard').hidden = false; $('qrMob').hidden = false; }
+if (/[?&]app\b/.test(Q)) {
+  var H0 = document.documentElement; H0.classList.add('appmode');
+  var openP = function(o){ H0.classList.toggle('au-open', o); $('abWhy').querySelector('em').textContent = o ? 'Close ↓' : 'Why ↑'; };
+  $('abWhy').onclick = function(){ openP(!H0.classList.contains('au-open')); };
+  $('abScrim').onclick = function(){ openP(false); };
+}
+if (C.video) {
+  var dlg = $('vid'), vel = $('vidEl'); vel.src = C.video; if (C.poster) vel.poster = C.poster; $('vidDl').href = C.video;
+  $('heroVideo').hidden = false;
+  $('heroVideo').onclick = function(){ dlg.showModal(); vel.play().catch(function(){}); };
+  $('vidX').onclick = function(){ dlg.close(); };
+  dlg.addEventListener('close', function(){ vel.pause(); });
+  dlg.addEventListener('click', function(e){ if (e.target === dlg) dlg.close(); });
+}
+
+/* ---- ?tour: a deterministic walkthrough from C.tour — tourAt(ms) paints one frame; record-video.sh records it ---- */
+function tourInit(){
+  var T = C.tour, H = document.documentElement, TR = T.transition || 360;
+  H.classList.add('tourmode', 'shot'); document.body.classList.add('nofx');
+  var SEG = T.segments, START = [], STATE = [], UNDER = [], acc = 0, st = JSON.parse(JSON.stringify(C.state));
+  SEG.forEach(function(s, i){
+    START.push(acc); acc += s.d;
+    Object.keys(s.st || {}).forEach(function(k){ st[k] = s.st[k]; }); STATE.push(JSON.parse(JSON.stringify(st)));
+    var u = null; if (scr[s.id].classList.contains('sheet')) for (var j = i - 1; j >= 0; j--) if (!scr[SEG[j].id].classList.contains('sheet')) { u = SEG[j].id; break; }
+    UNDER.push(u);
+  });
+  var TOTAL = acc, capEl = $('tCap'), tap = $('tTap'), pressed = null, popped = [];
+  $('tIntro').innerHTML = '<p class="au-eyebrow"><i></i>' + document.querySelector('.au-top-hero .au-eyebrow').textContent + '</p><h1 class="au-display">' + C.app + '</h1>' +
+    '<p class="au-lede">' + (T.introLede || document.querySelector('.au-top-hero .au-lede').innerHTML) + '</p>';
+  $('tEnd').innerHTML = '<p class="au-eyebrow"><i></i>Growth Audit · ' + C.app + '</p><h2 class="au-te-h">' + (T.endTitle || 'Five ideas, built into your own onboarding.') + '</h2>' +
+    '<div class="au-te-n">' + (O.cr ? '<div><small>up to</small><b>' + O.cr + '</b><span>CR to purchase</span></div>' : '') + (O.arpu ? '<div><small>up to</small><b>' + O.arpu + '</b><span>ARPU</span></div>' : '') + '</div>' +
+    (C.liveUrl ? '<div class="au-te-q"><img src="assets/qr-app.png" alt=""><div><b>Try it on your phone</b><span>' + C.liveUrl.replace(/^https?:\/\//, '').replace(/\/$/, '') + '</span></div></div>' : '') +
+    '<p class="au-te-f">' + C.grounding + '</p>';
+  function ease(x){ return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; }
+  function easeBack(x){ var c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2); }
+  function capHTML(c){
+    c = c || {k: '', t: '', l: ''};
+    return '<div class="au-tk' + (c.n ? '' : ' au-ctx') + '"><i></i>' + (c.n ? 'Idea ' + c.n + ' of ' + IDEAS : (c.k || 'Context')) + '</div><h2 class="au-tt">' + c.t + '</h2><p class="au-tl">' + (c.l || '') + '</p>' +
+      (c.o ? '<div class="au-to"><small>Potential outcome · based on Adapty data</small><b><mark>' + c.o + '</mark></b><span>' + (c.ol || '') + '</span></div>' : '');
+  }
+  function place(id, tf, z){ scr[id].style.transform = tf; scr[id].style.zIndex = z; }
+  window.TOUR_MS = TOTAL;
+  window.tourAt = function(ms){
+    ms = Math.max(0, Math.min(TOTAL - 1, ms));
+    var i = 0; while (i < SEG.length - 1 && ms >= START[i + 1]) i++;
+    var s = SEG[i], local = ms - START[i], prev = i > 0 ? SEG[i - 1] : null;
+    Object.keys(STATE[i]).forEach(function(k){ S[k] = STATE[i][k]; }); sync();
+    var moving = prev && prev.id !== s.id && local < TR, p = moving ? ease(local / TR) : 1;
+    Object.keys(scr).forEach(function(k){ scr[k].classList.remove('is-active', 'is-past', 'under'); place(k, 'translateX(100%)', 0); });
+    var B = scr[s.id];
+    if (moving) {
+      if (B.classList.contains('sheet')) { place(prev.id, 'none', 1); B.style.transform = 'translateY(' + (1 - p) * 100 + '%)'; }
+      else {
+        var slide = 'translateX(' + (-28 * p) + '%)'; place(prev.id, slide, 1); B.style.transform = 'translateX(' + (1 - p) * 100 + '%)';
+        if (UNDER[i - 1]) place(UNDER[i - 1], slide, 0);
+      }
+    } else B.style.transform = 'none';
+    B.style.zIndex = 2;
+    if (UNDER[i] && !moving) place(UNDER[i], 'none', 1);
+    /* optional reveal: s.pop scales an element in, s.reveal fades one in a beat later */
+    popped.forEach(function(e){ e.style.transform = ''; e.style.opacity = ''; }); popped = [];
+    var q = Math.max(0, Math.min(1, (local - 250) / 550));
+    if (s.pop) { var pe = B.querySelector(s.pop); if (pe) { pe.style.transform = 'scale(' + (.55 + .45 * easeBack(q)) + ')'; pe.style.opacity = Math.min(1, q * 1.6); popped.push(pe); } }
+    if (s.reveal) { var re = B.querySelector(s.reveal); if (re) { re.style.opacity = Math.max(0, Math.min(1, (local - 520) / 300)); popped.push(re); } }
+    /* caption crossfades at screen changes; waits for the intro, gives way to the end card */
+    var key = s.id, op = 1;
+    if (moving) { if (p < .5) { key = prev.id; op = 1 - p * 2; } else op = p * 2 - 1; }
+    if (capEl.dataset.k !== key) { capEl.innerHTML = capHTML(T.captions[key]); capEl.dataset.k = key; }
+    var io = ms < 1100 ? 1 : Math.max(0, 1 - (ms - 1100) / 300), eo = s.end ? Math.min(1, local / 350) : 0;
+    capEl.style.opacity = op * Math.max(0, Math.min(1, (ms - 1400) / 300)) * (1 - eo);
+    /* the finger: fades in, taps, ripples out. Selectors are scoped to the screen */
+    tap.style.opacity = 0; if (pressed) { pressed.style.opacity = ''; pressed = null; }
+    if (s.tap) {
+      var el = B.querySelector(s.tap[0]), dt = local - s.tap[1];
+      if (el && dt > -260 && dt < 420) {
+        var r = el.getBoundingClientRect();
+        tap.style.left = (r.left + r.width / 2) + 'px'; tap.style.top = (r.top + r.height / 2) + 'px';
+        if (dt < 0) { tap.style.opacity = (dt + 260) / 260 * .9; tap.style.transform = 'scale(1)'; }
+        else { tap.style.opacity = .9 * (1 - dt / 420); tap.style.transform = 'scale(' + (1 + dt / 420 * .9) + ')'; }
+        if (dt >= 0 && dt < 160) { el.style.opacity = .72; pressed = el; }
+      }
+    }
+    $('tIntro').style.opacity = T.intro === false ? 0 : io;
+    $('tEnd').style.opacity = eo;
+    $('tProg').style.width = (ms / TOTAL * 100) + '%';
+    cur = s.id;
+    return i;
+  };
+  var tm = /[?&]t=(\d+)/.exec(Q); tourAt(tm ? +tm[1] : 0);
+}
+
+/* boot: #<screen-id> deep-links a screen (shoot.sh / hero-stills.sh use it); ?lang=xx picks the language */
+(function(){
+  var lm = /[?&]lang=(\w+)/.exec(Q); if (lm) setLang(lm[1]); else setLang(S.lang);
+  var h = location.hash.slice(1);
+  jump(scr[h] ? h : ORDER[0]);
+  if (scr[h] && !SHOT && !document.documentElement.classList.contains('appmode')) setTimeout(function(){ $('prototype').scrollIntoView(); }, 0);
+  if (/[?&]tour\b/.test(Q) && C.tour) tourInit();
+})();
+</script>
+</body>
+</html>
